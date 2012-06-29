@@ -1,0 +1,45 @@
+Krypton Design Notes
+--------------------
+
+It has been unanimously decided by the only member of the project (which
+is me) to use jqueryui, or at least a part of it. The background png's
+used by jqueryui are to be definitely omitted.
+
+Jquery based components, some of which are unfortunately not part
+of jqueryui despite being popular, needs to be written from scratch.
+	o Carousel
+		Needs no explanation. This popular component on which most
+		landing pages depend is not part of jqueryui and hence needs to
+		be written. There are 100's of free ones out there, but writing
+		it natively will keep it small (and it will be fun).
+	o Live Filter
+		When an element is registered as a live filter, it should
+		provide a timeout and a callback. The callback will be called
+		'timeout' seconds _after_ the element's value changes. The
+		element which is registered _should_ support the jquery .val()
+		function.
+	o Slider
+		jQueryui already provides this and Im tempted to use it.
+		But yet to check if the slider can be defined on a textbox,
+		because the slider will ultimately be a live filter, which
+		needs the element to support a .val() function.
+
+Threads
+-------
+The Krypton application would eventually require using some threads
+(for maybe event polling). It is still not clear if a dedicated
+js function should be called using setInterval(), or if jQuery's
+.queue() can be used in some way.
+
+Pages
+-----
+Pages are div's with class 'page'. A page is whatever is below the
+navigation area, and at a time only one page is displayed. The rest
+are hidden. Some pages could also have class 'overlay', which means
+it is displayed on top of the current page (with z-index 2), and
+on closing or clicking back button will hide and reveal the underlying
+page.
+
+TODO
+----
+1) Decide database schema and create a install.sql
