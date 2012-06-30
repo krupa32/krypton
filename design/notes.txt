@@ -40,6 +40,20 @@ it is displayed on top of the current page (with z-index 2), and
 on closing or clicking back button will hide and reveal the underlying
 page.
 
+Database
+--------
+A database called app_db is used. The name is as generic as it can be
+so that it is not tied to any product version names. The empty database
+with no data is dumped into init_db.sql using
+	mysqldump -u root -p app_db > init_db.sql
+
+Whenever a new installation is setup, this init_db.sql can be used as
+	mysql -u root -p < init_db.sql
+
+Note: Whenever the database schema is updated, make sure the db is
+initialized, make the changes, and dump the schema back to init_db.sql.
+
 TODO
 ----
-1) Decide database schema and create a install.sql
+1) Start off with a native jquery based carousel component
+2) Make the main (candidate) landing page
