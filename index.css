@@ -1,0 +1,24 @@
+div { border:dotted 1px red; }
+
+* { margin:0; padding:0; font: 12pt 'Helvetica Neue',sans-serif; }
+
+.center { width:960px; margin:0 auto; }
+
+div#header {
+	background-color: #333; color: #999;
+	img { width:300px; height:100px; }
+	ul {
+		list-style: none; float: right; margin-top: 40px;
+		li { display:inline; padding-left: 2em;
+			a, a:active, a:visited { text-decoration: none; letter-spacing: -1px; color:inherit; }
+			a:hover { color:white; }
+		}
+	}
+}
+div#landing {
+	height:400px; background-color: #456;
+	div#carousel { float:left; width: 400px; height: 300px; margin:50px 0; }
+	div#form { width: 400px; height: 300px; margin:50px 0 50px 550px; }
+}
+div#features { height:400px; background-color: #cccfd3; }
+div#partners { height:200px; background-color: #cccfd3; }
