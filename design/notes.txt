@@ -55,5 +55,5 @@ initialized, make the changes, and dump the schema back to init_db.sql.
 
 TODO
 ----
-1) Write a slider plugin, probably using jquery slider
-2) Make the main (candidate) landing page
+1) Use jQuery slider for experience
+2) Upload resume backend code

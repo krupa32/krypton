@@ -6,6 +6,15 @@
 		
 		<link rel="stylesheet/less" type="text/css" href="index.css"></link>
 		<script type="text/javascript" src="less/less.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="kfilepicker/kfilepicker.css"></link>
+		<script type="text/javascript" src="kfilepicker/kfilepicker.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#resume').kfilepicker();
+			});
+		</script>
 	</head>
 	
 	<body>
@@ -22,10 +31,62 @@
 		<div id="landing">
 			<div class="center">
 				<div id="carousel"></div>
-				<div id="form"></div>
+				<div id="form">
+					<p>Email Address<br><input type="text"></p>
+					<p>Resume<br><input type="text" id="resume"></p>
+					<p>Experience<br><input type="text"></p>
+					<p class="ctoa"><a href="">START APPLYING NOW</a></p>
+				</div>
 			</div>
 		</div>
-		<div id="features"></div>
-		<div id="partners"></div>
+		<div id="features">
+			<div class="center">
+				<table cellspacing=50 >
+					<tr>
+						<td>
+							<h1>No Signups. No Logins.</h1>
+							<p>
+								We respect your time. All you have to do upload your resume and tell us your preferences.
+								And this takes hardly 2 minutes. You don't have to come back and login
+								to this website again. We will send you emails and keep you in the loop. Easy.
+							</p>
+						</td>
+						<td>
+							<h1>No more endless job searches</h1>
+							<p>
+								You don't have to search for jobs. We do that for you.
+								Our advanced matching algorithm constantly keeps an eye out for jobs matching your profile.
+								and immediately applies for matching jobs.
+								Just keep checking your emails. Simple.
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h1>Your preferences matter</h1>
+							<p>
+								Your resume is important. But we also value your preferences equally.
+								Your preferences are extensively used in our match algorithms. So telling us your
+								expected salary and job location goes a long way in finding the perfect job.
+							</p>
+						</td>
+						<td>
+							<h1>Best jobs guaranteed</h1>
+							<p>
+								You don't have to apply for jobs.
+								Once a job is posted, we automatically match the best candidates and apply for the job.
+								You are guaranteed to apply for the best matching jobs, and the companies are guaranteed to get
+								the best matching candidates.
+							</p>
+						</td>
+					</tr>
+			</table>
+			</div>
+		</div>
+		<div id="partners">
+			<div class="center">
+				<img src="partners.png">
+			</div>
+		</div>
 	</body>
 </html>
