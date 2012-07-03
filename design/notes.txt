@@ -55,5 +55,4 @@ initialized, make the changes, and dump the schema back to init_db.sql.
 
 TODO
 ----
-1) Use jQuery slider for experience
-2) Upload resume backend code
+1) Upload email, resume and experience to backend php

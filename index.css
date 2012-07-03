@@ -33,15 +33,11 @@ div#landing { background-color: @landing_bg; color:@landing_fg; padding:50px 0; 
 	div#carousel { float:left; width: 500px; height: 300px; border: solid 5px lighten(@landing_bg, 2%); .rounded(); }
 	div#form { margin-left:600px;
 		p { margin-top: 1em; font-style: italic; }
-		input[type=text] { width:100%; padding:8px; border: none; border-bottom: solid 1px lighten(@landing_bg, 10%); background-color: lighten(@landing_bg, 5%); color:#ccc; .rounded(); }
+		input[type=text], div#experience { width:100%; padding:8px; border: none; border-bottom: solid 1px lighten(@landing_bg, 10%); background-color: lighten(@landing_bg, 5%); color:#ccc; .rounded(); }
 		p.ctoa { text-align: center; margin:4em 0 2em 0;
 			a { padding:1em 2em; .gradient(orange, darken(orange, 15%)); color:@landing_bg; font-weight: bold; .shadow(#ccc); .rounded(); text-decoration: none; border-top: solid 1px #ccc; }
 			a:hover { .gradient(orange, darken(orange, 10%); }
 		}
-		div#experience { padding:8px; border: none; border-bottom: solid 1px lighten(@landing_bg, 10%); background-color: lighten(@landing_bg, 5%); color:#ccc; }
-		.ui-slider-horizontal { height:auto; }
-		.ui-state-default { background:#ccc; width:20px; }
-		.ui-slider-handle { height:2.7em; opacity:.5; cursor:pointer; }
 	}
 }
 
