@@ -35,7 +35,6 @@ var app = {
 			processData: false,
 			contentType: false,
 			success: function(resp){
-				debugger;
 				console.log('remote_upload received: ' + resp);
 			},
 		});
