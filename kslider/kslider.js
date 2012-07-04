@@ -23,7 +23,9 @@
 			this.slider(options);
 		},
 		
-
+		option: function(name, new_val) {
+			return this.slider('option', name, new_val);
+		}
 	};
 	
 	$.fn.kslider = function(method) {

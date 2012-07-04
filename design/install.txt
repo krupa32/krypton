@@ -1,0 +1,13 @@
+Installation Requirements and Tips
+==================================
+
+1) PHP
+2) MySQL
+3) init_db.sql
+4) User and file permissions
+	The linux user used for development should belong to the group 'www-data'.
+	This is because apache runs as this user. Also, all the directories in
+	the DOCUMENT_ROOT should have the group changed to www-data. This is
+	because the upload_resume.php will try to create the
+	DOCUMENT_ROOT/uploads directory during the 1st upload, and you dont
+	want it to fail.

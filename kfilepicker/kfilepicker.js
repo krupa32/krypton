@@ -21,6 +21,13 @@
 			this.focus(function(){
 				file.click();
 			});
+		},
+		
+		option: function(name, new_val) {
+			if (name == 'file_data') {
+				var file = this.next('.kfile');
+				return file.get(0).files[0];
+			}
 		}
 	};
 	
