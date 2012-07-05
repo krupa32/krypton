@@ -55,4 +55,4 @@ initialized, make the changes, and dump the schema back to init_db.sql.
 
 TODO
 ----
-1) Upload email, resume and experience to backend php
+1) Design a section to get preferences and update the same in db

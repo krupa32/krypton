@@ -27,7 +27,7 @@ var app = {
 		fd.append('email', $('#email').val());
 		fd.append('experience', $('#experience').kslider('option', 'value'));
 
-		console.log('calling ajax');
+		console.log('calling ajax. email=' + $('#email').val() + " exp=" + $('#experience').kslider('option', 'value'));
 		$.ajax({
 			url: 'upload_resume.php',
 			type: 'POST',

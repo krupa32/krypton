@@ -13,6 +13,8 @@
 			
 			this.addClass('kslider');
 			
+			this.append('<span>0</span>');
+			
 			// add a slide event to the options
 			options = $.extend(options, {
 				slide: function(event, ui){
