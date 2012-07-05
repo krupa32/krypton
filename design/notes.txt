@@ -45,7 +45,7 @@ Database
 A database called app_db is used. The name is as generic as it can be
 so that it is not tied to any product version names. The empty database
 with no data is dumped into init_db.sql using
-	mysqldump -u root -p app_db > init_db.sql
+	mysqldump -u root -p --no-data --databases app_db > init_db.sql
 
 Whenever a new installation is setup, this init_db.sql can be used as
 	mysql -u root -p < init_db.sql

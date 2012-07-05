@@ -29,16 +29,28 @@ div#header { background-color: @landing_bg; color: @landing_fg;
 	}
 }
 
-div#landing { background-color: @landing_bg; color:@landing_fg; padding:50px 0; border-bottom: solid 1px black;
-	div#carousel { float:left; width: 500px; height: 300px; border: solid 5px lighten(@landing_bg, 2%); .rounded(); }
-	div#form { margin-left:600px;
+div#landing { background-color: @landing_bg; color:@landing_fg; padding:50px 0; border-bottom: solid 1px black; height: 350px;
+	div#carousel { width: 500px; height: 350px; border: solid 5px lighten(@landing_bg, 2%); .rounded(); }
+	div.form { width:350px; height: 350px; float:right;
 		p { margin-top: 1em; font-style: italic; }
 		input[type=text], div#experience { width:100%; padding:8px; border: none; border-bottom: solid 1px lighten(@landing_bg, 10%); background-color: lighten(@landing_bg, 5%); color:#ccc; .rounded(); }
+		div#experience { width:auto; }
 		p.ctoa { text-align: center; margin:4em 0 2em 0;
 			a { padding:1em 2em; .gradient(orange, darken(orange, 15%)); color:@landing_bg; font-weight: bold; .shadow(#ccc); .rounded(); text-decoration: none; border-top: solid 1px #ccc; }
 			a:hover { .gradient(orange, darken(orange, 10%); }
+			
+			a#save { .gradient(#0c6, darken(#0c6, 15%)); }
+			a#save:hover { .gradient(#0c6, darken(#0c6, 10%); }
+			
+			a#back { .gradient(#ccc, darken(#ccc, 15%)); }
+			a#back:hover { .gradient(#ccc, darken(#ccc, 10%)); }
 		}
+
+		p.info { font-style:normal; color:c90; text-align: center; }
 	}
+	div#form_preferences { height:inherit; display:none; }
+	div#form_resume { height:inherit; }
+
 }
 
 div#features { height:400px; background-color: #cccfd3; border-top: solid 1px white; border-bottom: solid 1px #999;

@@ -4,6 +4,7 @@ Installation Requirements and Tips
 1) PHP
 2) MySQL
 3) Database schema creation
-    Use init_db.sql
+    Use init_db.sql as follows:
+	mysql -u root -p < init_db.sql
 4) Directories and files
 	/uploads - should be created with group write permission to 'www-data'
