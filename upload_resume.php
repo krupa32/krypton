@@ -1,6 +1,8 @@
 <?php
 	
 	include "common/config.php";
+	
+	session_start();
 
 	$db = new mysqli($db_host, $db_user, $db_password, $db_name);
 	if ($db->connect_error) {
@@ -37,7 +39,10 @@
 		$db->query($q);
 	}
 	
-
+	/* save the user's id in the session.
+	 * it will be used in case the user updates preferences.
+	 */
+	$_SESSION["user_id"] = $id;
 	
 	/* all resume uploads are stored in /uploads.
 	 * this dir should be created with write permission for the apache user/group (www-data)

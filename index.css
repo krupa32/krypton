@@ -12,12 +12,13 @@ div { border:dotted 1px red; }*/
 }
 
 /* resets*/ 
-*, input { margin:0; padding:0; font: 12pt 'Helvetica Neue',sans-serif; outline:none; }
+*, body, input { margin:0; padding:0; font-size:12pt; font-family: "Duru Sans",sans-serif; outline:none; }
 
 /* classes*/ 
 .center { width:960px; margin:0 auto; }
 
 /* sections */
+body {  background: url('images/body_bg.gif') repeat; }
 div#header { height: 100px; background-color: @landing_bg; color: @landing_fg;
 	img { width:300px; height:100px; }
 	ul {
@@ -36,30 +37,31 @@ div#landing { background-color: @landing_bg; color:@landing_fg; border-bottom: s
 		p { margin-top: 1em; font-style: italic; }
 		input[type=text], div#experience { width:100%; padding:8px; border: none; border-bottom: solid 1px lighten(@landing_bg, 10%); background-color: lighten(@landing_bg, 5%); color:#ccc; .rounded(); }
 		div#experience { width:auto; }
-		p.ctoa { text-align: center; margin:4em 0 2em 0;
+		p.ctoa { text-align: center; margin:4em 0 2em 0; font-style: normal;
 			a { padding:1em 2em; .gradient(orange, darken(orange, 15%)); color:@landing_bg; font-weight: bold; .shadow(#ccc); .rounded(); text-decoration: none; border-top: solid 1px #ccc; }
 			a:hover { .gradient(orange, darken(orange, 10%); }
 			
 			a#save { .gradient(#0c6, darken(#0c6, 15%)); }
 			a#save:hover { .gradient(#0c6, darken(#0c6, 10%); }
 			
-			a#back { .gradient(#ccc, darken(#ccc, 15%)); }
-			a#back:hover { .gradient(#ccc, darken(#ccc, 10%)); }
+			a#back { .gradient(#aaa, darken(#aaa, 15%)); }
+			a#back:hover { .gradient(#aaa, darken(#aaa, 10%)); }
 		}
 
-		p.info { font-style:normal; color:c90; text-align: center; }
+		p.info { font-style:normal; color:c90; }
 	}
 	div#form_resume { height:inherit; }
 	div#form_preferences { height:inherit; display:none; }
+	div#form_share { height:inherit; display:none; }
 
 }
 
-div#features { height:400px; background-color: #cccfd3; border-top: solid 1px white; border-bottom: solid 1px #999;
+div#features { height:400px; border-top: solid 1px white; border-bottom: solid 1px #999;
 	table { width:100%; }
 	td { width: 50%; vertical-align: top; }
 	h1 { text-transform: uppercase; color:#600; .shadow(); font-weight: bold; }
 	p { font-size: 14px; color:#333; margin-top:1em; line-height: 1.5em; }
 }
-div#partners { height:200px; background-color: #c0c3c6; border-top: solid 1px white; 
+div#partners { height:200px;  border-top: solid 1px white; 
 	img { width:200px; height:200px; }
 }

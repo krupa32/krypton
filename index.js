@@ -13,7 +13,11 @@ var app = {
 			max: 50
 		});
 		
+		$('#carousel').kcarousel();
+		
 		$('#apply').click(app.upload_resume);
+		
+		$('#save').click(app.save_preferences);
 		
 		$('#back').click(function(){
 			$('#form_preferences').hide('slide', { direction: 'right' }, 'fast', function(){
@@ -40,7 +44,7 @@ var app = {
 			processData: false,
 			contentType: false,
 			success: function(data){
-				resp = JSON.parse(data);
+				var resp = JSON.parse(data);
 				console.log('remote_upload received: ' + resp);
 				if (resp !== true) {
 					alert("There was an error uploading your resume. [" + resp + "]");
@@ -50,6 +54,27 @@ var app = {
 					$('#form_preferences').show('slide', { direction: 'right' });
 				});
 			},
+		});
+		
+		return false;
+	},
+	
+	save_preferences: function() {
+		var fd = {};
+		
+		fd.location = $('#location').val();
+		fd.ctc = $('#ctc').val();
+		
+		$.post('save_preferences.php', fd, function(data){
+			var resp = JSON.parse(data);
+			console.log('save_preferences received: ' + resp);
+			if (resp !== true) {
+					alert("There was an error uploading your resume. [" + resp + "]");
+					return;
+			}
+			$('#form_preferences').hide('slide', {direction:'left'}, 'fast', function(){
+				$('#form_share').show('slide', {direction:'right'});
+			});
 		});
 		
 		return false;
