@@ -30,9 +30,9 @@ div#header { height: 100px; background-color: @landing_bg; color: @landing_fg;
 	}
 }
 
-div#landing { background-color: @landing_bg; color:@landing_fg; border-bottom: solid 1px black; border-top:solid 1px @landing_bg; /* the border-top is to account for margin-collapsing */
+div#landing { background-color: @landing_bg; color:@landing_fg; border-bottom: solid 1px black; border-top:solid 2px @landing_bg; /* the border-top is to account for margin-collapsing */
 	div.center { border-top: solid 1px @landing_bg; }
-	div#carousel { width: 500px; height: 350px; margin:50px 0; border: solid 5px lighten(@landing_bg, 2%); .rounded(); }
+	div#carousel { width: 500px; height: 350px; margin:50px 0; border: solid 1px lighten(@landing_bg, 10%); .rounded(); }
 	div.form { width:350px; height: 350px; margin: 50px 0; float:right;
 		p { margin-top: 1em; font-style: italic; }
 		input[type=text], div#experience { width:100%; padding:8px; border: none; border-bottom: solid 1px lighten(@landing_bg, 10%); background-color: lighten(@landing_bg, 5%); color:#ccc; .rounded(); }

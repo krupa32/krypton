@@ -1,0 +1,31 @@
+/* temp styles *
+div { border:dotted 1px red; }*/
+
+/* less rules*/
+@header_bg: #333; @header_fg:#999;
+.shadow(@c:#fff) { text-shadow: 1px 1px 1px @c; }
+.rounded() { border-radius:4px; }
+.gradient(@c1:#ccc, @c2:#999) {
+	background: -webkit-linear-gradient(top, @c1, @c2); background: -moz-linear-gradient(top, @c1, @c2);
+	background: -ms-linear-gradient(top, @c1, @c2); background: -o-linear-gradient(top, @c1, @c2);
+}
+
+/* resets*/ 
+*, body, input { margin:0; padding:0; font-size:12pt; font-family: "Duru Sans",sans-serif; outline:none; }
+
+/* classes*/ 
+.center { width:960px; margin:0 auto; }
+
+/* sections */
+body {  background: url('/images/body_bg.gif') repeat; }
+div#top_bar { height:25px; background-color: black; color:#666; }
+div#header { height: 100px; background-color: @header_bg; color: @header_fg; border-bottom: solid 1px black;
+	img { width:300px; height:100px; }
+	ul {
+		list-style: none; float: right; margin-top: 40px;
+		li { display:inline; padding-left: 2em;
+			a, a:active, a:visited { text-decoration: none; color:inherit; font-size: 12px; font-weight: bold; .shadow(#000); }
+			a:hover { color:white; }
+		}
+	}
+}
