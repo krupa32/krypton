@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/jquery/jqueryui.css"></link>
+		<script type="text/javascript" src="/jquery/jquery.js"></script>
+		<script type="text/javascript" src="/jquery/jqueryui.js"></script>
+		
+		<script type="text/javascript" src="/admin/index.js"></script>
+		<link rel="stylesheet/less" type="text/css" href="/admin/index.css"></link>
+		<script type="text/javascript" src="/less/less.js"></script>
+		
+		<script type="text/javascript">
+			$(document).ready(function(){
+				app.init();
+			});
+		</script>
+	</head>
+	
+	<body>
+		<div id="top_bar">
+		</div>
+		<div id="header">
+			<div class="center">
+				<img src="/images/logo.png" />
+			</div>
+		</div>
+
+		<div id="create_company_section">
+			<div class="center">
+				<h1>Create New Company</h1>
+				<p>Contact Email Address<br><input type="text" id="email"></p>
+				<p>Mobile<br><input type="text" id="mobile"></p>
+				<p>Company Name<br><input type="text" id="name"></p>
+				<p>Address<br><input type="text" id="address"></p>
+				<p class="ctoa"><a href="" id="create_company">Create Company</a></p>
+			</div>
+		</div>
+		
+		<div id="create_recruiter_section">
+			<div class="center">
+				<h1>Create New Recruiter</h1>
+				<p>Company Id<br><input type="text" id="company_id"></p>
+				<p>Email Address<br><input type="text" id="email"></p>
+				<p>Password<br><input type="password" id="password"></p>
+				<p class="ctoa"><a href="" id="create_recruiter">Create Recruiter</a></p>
+			</div>
+		</div>		
+
+	</body>
+</html>

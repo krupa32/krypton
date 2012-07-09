@@ -18,7 +18,7 @@ div { border:dotted 1px red; }*/
 .center { width:960px; margin:0 auto; }
 
 /* sections */
-body {  background: url('images/body_bg.gif') repeat; }
+body {  background: url('/images/body_bg.png') repeat; }
 div#header { height: 100px; background-color: @landing_bg; color: @landing_fg;
 	img { width:300px; height:100px; }
 	ul {

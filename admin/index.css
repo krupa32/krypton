@@ -22,26 +22,20 @@ body {  background: url('/images/body_bg.png') repeat; color:@text_fg; }
 div#top_bar { height:25px; background-color: black; color:#666; }
 div#header { height: 100px; background-color: @header_bg; color: @header_fg; border-bottom: solid 1px black;
 	img { width:300px; height:100px; }
-	ul {
-		list-style: none; float: right; margin-top: 40px;
-		li { display:inline; padding-left: 2em;
-			a, a:active, a:visited { text-decoration: none; color:inherit; font-size: 12px; font-weight: bold; .shadow(#000); }
-			a:hover { color:white; }
-		}
-	}
 }
+
+h1 { padding:25px 0; font:bold 32px Georgia, serif; font-style:italic; .shadow(); }
+input[type=text], input[type=password] { width:100%; padding:8px; background-color: #e0e0e0; border:solid 1px #bbb; border-bottom: solid 1px #eee; .rounded(); }
+a { padding:.8em 2em; .gradient(orange, darken(orange,10%)); color:#333; font-weight: bold; .shadow(#ccc); .rounded(); text-decoration: none; border-top: solid 1px #ddd; }
+a:hover { .gradient(orange, darken(orange, 5%); }
+p { margin-bottom:2em; }
+p.ctoa { margin-top:3em; text-align:center;
 
 div#landing { border-top:solid 1px #fff;
 	div#features { width:550px; margin-top:75px; text-align: center;
-		h1 { padding:25px 0; font:bold 32px Georgia, serif; font-style:italic; .shadow(); border-bottom:dotted 1px #999; }
 		p { margin:25px 0;  }
 	}
 	div#login { float:right; width:300px; margin-top:25px;
-		p { margin-bottom:2em; }
-		input[type=text], input[type=password] { width:100%; padding:8px; background-color: #e0e0e0; border:solid 1px #bbb; border-bottom: solid 1px #eee; .rounded(); }
-		p.ctoa { margin-top:3em; text-align:center;
-			a { padding:.8em 2em; .gradient(orange, darken(orange,10%)); color:#333; font-weight: bold; .shadow(#ccc); .rounded(); text-decoration: none; border-top: solid 1px #ddd; }
-			a:hover { .gradient(orange, darken(orange, 5%); }
 		}
 		p.sign_up { text-align: center;
 			a { color: #900; }
