@@ -11,6 +11,9 @@
 		<script type="text/javascript" src="/jquery/jquery.js"></script>
 		<script type="text/javascript" src="/jquery/jqueryui.js"></script>
 
+		<link rel="stylesheet" type="text/css" href="/kslider/kslider.css"></link>
+		<script type="text/javascript" src="/kslider/kslider.js"></script>
+
 		<script type="text/javascript" src="/app/page_home.js"></script>
 		<script type="text/javascript" src="/app/page_jobs.js"></script>
 		<script type="text/javascript" src="/app/page_applications.js"></script>
@@ -50,9 +53,20 @@
 		
 		<div id="search">
 			<div class="center">
+			
 				<div class="page" id="home">
-					Home page
+					<div class="filter" id="filter_home">
+						<p>Tags<br><input type="text" id="tags"></p>
+						<div id="location_div">Location<br><input type="text" id="location"></div>
+						<div id="ctc_div">Maximum CTC<br><div id="max_ctc"></div></div>
+						<div id="experience_div">Minimum Experience<br><div id="min_experience"></div></div>
+						<div class="clear"></div>
+					</div>
+					<table id="results">
+						
+					</table>
 				</div>
+				
 				<div class="page" id="jobs">
 					Jobs page
 				</div>

@@ -3,7 +3,7 @@ div { border:dotted 1px red; }*/
 
 /* less rules*/
 @header_bg: #303840; @header_fg:#999;
-@text_fg: #333;
+@text_bg:#eee; @text_fg: #333;
 .shadow(@c:#fff) { text-shadow: 1px 1px 1px @c; }
 .rounded() { border-radius:4px; }
 .gradient(@c1:#ccc, @c2:#999) {
@@ -16,10 +16,14 @@ div { border:dotted 1px red; }*/
 
 /* classes*/ 
 .center { width:960px; margin:0 auto; }
+.clear { clear:both; }
 .hilite { background-color: darken(orange, 10%); color:#333; .shadow(#ccc); }
+.filter { margin:25px; border:dotted 1px @text_fg; }
 
 /* sections */
 body {  background: url('/images/body_bg.png') repeat; color:@text_fg; }
+input[type=text], input[type=password] { width:100%; padding:8px; background-color: #e0e0e0; border:solid 1px #bbb; border-bottom: solid 1px #eee; .rounded(); }
+
 div#top_bar { height:25px; background-color: black; color:#666; border-top:solid 1px black;
 	p { margin-top:6px; font-size:12px; }
 	ul { float: right; list-style: none; font-size: 12px;
@@ -35,5 +39,10 @@ div#header { height: 100px; background-color: @header_bg; color: @header_fg; bor
 	div.nav:hover { background-color: lighten(@header_bg, 5%); }
 }
 
-div#search { border-top:solid 1px #fff;
+div#filter_home {
+	p { margin:25px 25px 0 25px; }
+	div#location_div { float:left; width:25%; margin:25px; }
+	div#experience_div { float:right; width:25%; margin:25px; }
+	div#ctc_div { float:right; width: 30%; margin:25px; }
+	div#min_experience, div#max_ctc { padding:8px; background-color: #e0e0e0; border:solid 1px #bbb; border-bottom: solid 1px #eee; .rounded(); }
 }
