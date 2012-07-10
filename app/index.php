@@ -10,6 +10,11 @@
 		<link rel="stylesheet" type="text/css" href="/jquery/jqueryui.css"></link>
 		<script type="text/javascript" src="/jquery/jquery.js"></script>
 		<script type="text/javascript" src="/jquery/jqueryui.js"></script>
+
+		<script type="text/javascript" src="/app/page_home.js"></script>
+		<script type="text/javascript" src="/app/page_jobs.js"></script>
+		<script type="text/javascript" src="/app/page_applications.js"></script>
+		<script type="text/javascript" src="/app/page_interviews.js"></script>
 		
 		<script type="text/javascript" src="/app/index.js"></script>
 		<link rel="stylesheet/less" type="text/css" href="/app/index.css"></link>
@@ -36,12 +41,10 @@
 		<div id="header">
 			<div class="center">
 				<img src="/images/logo.png" />
-				<ul>
-					<li>HOME</li>
-					<li>JOBS</li>
-					<li>APPLICATIONS</li>
-					<li>INTERVIEWS</li>
-				</ul>
+				<div class="nav" id="nav_home">INTERVIEWS</div>
+				<div class="nav" id="nav_home">APPLICATIONS</div>
+				<div class="nav" id="nav_home">JOBS</div>
+				<div class="nav" id="nav_home">HOME</div>
 			</div>
 		</div>
 		

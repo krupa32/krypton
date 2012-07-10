@@ -12,6 +12,7 @@
 	
 	$email = $_POST["email"];
 	$experience = $_POST["experience"];
+	$name = $_POST["name"];
 	
 	/* check if this user already exists in our db */
 	$q = "select id from candidates where email='$email'";
@@ -22,7 +23,7 @@
 	
 	if ($result->num_rows == 0) {
 		/* user does not exist, create a new record */
-		$q = "insert into candidates set email='$email', experience=$experience";
+		$q = "insert into candidates set email='$email', name='$name', experience=$experience";
 		if (!$db->query($q)) {
 			$ret = "Error creating candidate record";
 			goto out;
@@ -35,7 +36,7 @@
 		$id = $row["id"];
 		error_log("User $email found. Using id $id");
 		
-		$q = "update candidates set experience=$experience where id=$id";
+		$q = "update candidates set name='$name', experience=$experience where id=$id";
 		$db->query($q);
 	}
 	

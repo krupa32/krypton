@@ -2,7 +2,7 @@
 div { border:dotted 1px red; }*/
 
 /* less rules*/
-@header_bg: #333; @header_fg:#999;
+@header_bg: #303840; @header_fg:#999;
 @text_fg: #333;
 .shadow(@c:#fff) { text-shadow: 1px 1px 1px @c; }
 .rounded() { border-radius:4px; }
@@ -31,10 +31,8 @@ div#top_bar { height:25px; background-color: black; color:#666; border-top:solid
 }
 div#header { height: 100px; background-color: @header_bg; color: @header_fg; border-bottom: solid 1px black;
 	img { width:300px; height:100px; }
-	ul { margin:41px 0; list-style: none; float: right;
-		li { padding:41px 25px; display:inline; cursor:pointer; .shadow(#000); }
-		li:hover { background-color: lighten(@header_bg, 5%); }
-	}
+	div.nav { float:right; padding:41px 25px; cursor:pointer; font-weight: bold; .shadow(#000); }
+	div.nav:hover { background-color: lighten(@header_bg, 5%); }
 }
 
 div#search { border-top:solid 1px #fff;

@@ -16,6 +16,7 @@ div { border:dotted 1px red; }*/
 
 /* classes*/ 
 .center { width:960px; margin:0 auto; }
+.clear { clear:both; }
 
 /* sections */
 body {  background: url('/images/body_bg.png') repeat; }
@@ -34,8 +35,10 @@ div#landing { background-color: @landing_bg; color:@landing_fg; border-bottom: s
 	div.center { border-top: solid 1px @landing_bg; }
 	div#carousel { width: 500px; height: 350px; margin:50px 0; border: solid 1px lighten(@landing_bg, 10%); .rounded(); }
 	div.form { width:350px; height: 350px; margin: 50px 0; float:right;
-		p { margin-top: 1em; font-style: italic; }
+		p { margin-top: 1em; }
 		input[type=text], div#experience { width:100%; padding:8px; border: none; border-bottom: solid 1px lighten(@landing_bg, 10%); background-color: lighten(@landing_bg, 5%); color:#ccc; .rounded(); }
+		div#exp_div { float:left; width:45%; }
+		div#resume_div { float:right; width:45%; }
 		div#experience { width:auto; }
 		p.ctoa { text-align: center; margin:4em 0 2em 0; font-style: normal;
 			a { padding:1em 2em; .gradient(orange, darken(orange, 15%)); color:@landing_bg; font-weight: bold; .shadow(#ccc); .rounded(); text-decoration: none; border-top: solid 1px #ccc; }

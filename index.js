@@ -35,6 +35,7 @@ var app = {
 		
 		fd.append('resume', resume_file);
 		fd.append('email', $('#email').val());
+		fd.append('name', $('#name').val());
 		fd.append('experience', $('#experience').kslider('option', 'value'));
 
 		$.ajax({
