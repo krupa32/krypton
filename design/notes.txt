@@ -53,6 +53,33 @@ Whenever a new installation is setup, this init_db.sql can be used as
 Note: Whenever the database schema is updated, make sure the db is
 initialized, make the changes, and dump the schema back to init_db.sql.
 
+Indexer
+-------
+Indexer is a background daemon written in C. It maintains an index tree
+of words. The index tree is a multi-level tree with each node having
+26 children. The characters of a word are used to traverse the tree
+and arrive at a node (leaf or non-leaf) which has a linked list of
+'reference' nodes. Each 'reference' node has a candidate_id and
+ref_cnt for that word.
+
+It does the following tasks
+1) During init, it will parse all .txt files in /uploads and build index
+   tree. It also opens a unix domain socket and waits for commands.
+2) It handles the following commands from the web server
+	a) PARSE - Candidate id is given as input.
+			   It parses the 'id.txt' file in /uploads and updates the 
+			   index tree
+	b) MATCH - List of words, start record, num records  are given as input.
+			   For each word,
+			   - traverse the index tree and get list of candidate ids
+			   - for each candidate calculate score as follows
+			   		score = 100 + (ref_cnt - 1)
+				 this means for each matched word, the candidate gets
+				 100 points, and for each further reference, 1 point.
+			   - add candidate id to return list (if not present)
+			   - add candidate score to return score for candidate
+			   - return list of <candidate id, score>
+
 TODO
 ----
 1) Design a section to get preferences and update the same in db
