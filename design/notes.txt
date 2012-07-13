@@ -62,24 +62,20 @@ and arrive at a node (leaf or non-leaf) which has a linked list of
 'reference' nodes. Each 'reference' node has a candidate_id and
 ref_cnt for that word.
 
+Indexer also maintains an array candidate_info[100,000].
+Each candidate info currently has only score field of 2 bytes.
+This field is used to store the candidate's score.
+
+
 It does the following tasks
 1) During init, it will parse all .txt files in /uploads and build index
    tree. It also opens a unix domain socket and waits for commands.
 2) It handles the following commands from the web server
-	a) PARSE - Candidate id is given as input.
-			   It parses the 'id.txt' file in /uploads and updates the 
-			   index tree
-	b) MATCH - List of words, start record, num records  are given as input.
-			   For each word,
-			   - traverse the index tree and get list of candidate ids
-			   - for each candidate calculate score as follows
-			   		score = 100 + (ref_cnt - 1)
-				 this means for each matched word, the candidate gets
-				 100 points, and for each further reference, 1 point.
-			   - add candidate id to return list (if not present)
-			   - add candidate score to return score for candidate
-			   - return list of <candidate id, score>
+    a) PARSE - Candidate id is given as input.
+               It parses the 'id.txt' file in /uploads and updates the 
+               index tree
+    b) MATCH - List of words, start record, num records  are given as input.
 
 TODO
 ----
-1) Design a section to get preferences and update the same in db
+
