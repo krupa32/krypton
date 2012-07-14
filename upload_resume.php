@@ -45,10 +45,6 @@
 	 */
 	$_SESSION["user_id"] = $id;
 	
-	/* all resume uploads are stored in /uploads.
-	 * this dir should be created with write permission for the apache user/group (www-data)
-	 */
-	$upload_dir = "/uploads";
 	
 	/* check if upload dir exists */
 	if (!is_dir($upload_dir)) {
@@ -61,15 +57,77 @@
 		goto out;
 	}
 	
+	/* move uploaded resume to upload dir */
 	$src = $_FILES["resume"]["tmp_name"];
 	$dst = "$upload_dir/$id.doc";
 	error_log("moving [$src] to [$dst]");
 	move_uploaded_file($src, $dst);
+
+	/* check if upload txt dir exists */	
+	if (!is_dir($upload_txt_dir)) {
+		$ret = "/uploads does not exist";
+		goto out;
+	}
+
+	/* convert resume to txt and save in upload txt dir */
+	system("abiword --to=$upload_txt_dir/$id.txt $dst", $ret);
+	if ($ret != 0) {
+		$ret = "Error converting resume to txt";
+		goto out;
+	}
+	
+	/* create socket */
+	$cfd = socket_create(AF_UNIX, SOCK_STREAM, 0);
+	if (!$cfd) {
+		$ret = "Error creating socket";
+		goto out;
+	}
+	
+	/* bind socket */
+	$caddr = "/tmp/client.sock";
+	unlink($caddr);
+	if (!socket_bind($cfd, $caddr)) {
+		$ret = "Error binding socket";
+		goto out;
+	}
+	
+	/* connect to indexer */
+	$saddr = "/tmp/indexer.sock";
+	if (!socket_connect($cfd, $saddr)) {
+		$ret = "Error connecting to indexer:" . socket_strerror(socket_last_error());
+		goto out;
+	}
+	
+	/* send cmd to indexer */
+	$cmd = pack("iii", 0x01, 4, $id);
+	if (socket_send($cfd, $cmd, 12, 0) != 12) {
+		$ret = "Did not send 12 bytes";
+		goto out;
+	}
+	
+	/* recv rsp from indexer */
+	if (socket_recv($cfd, $rsp_data, 12, 0) != 12) {
+		$ret = "Did not receive 12 bytes";
+		goto out;
+	}
+	
+	/* check rsp */
+	$rsp = unpack("iopcode/ilen/istatus", $rsp_data);
+	if ($rsp["status"] != 0) {
+		$ret = "Error indexing txt file";
+		goto out;
+	}
+	
+	socket_close($cfd);
+	$cfd = 0;
+	
 	$ret = true;
 
 out:
 	if (!$db->connect_error)
 		$db->close();
+	if ($cfd)
+		socket_close($cfd);
 		
 	print json_encode($ret);
 ?>

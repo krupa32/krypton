@@ -15,6 +15,10 @@
 #define MAX_TAGS_LEN		100
 #define MAX_MATCHES			100
 
+#define CMD_PARSE			0x01
+#define CMD_MATCH			0x02
+#define RSP_PARSE			0x81
+#define RSP_MATCH			0x82
 
 struct index_node
 {
@@ -27,6 +31,15 @@ struct ref_node
 	int id;
 	int occurences;
 
+	struct list_head cref_list;
+	struct list_head list;
+};
+
+struct candidate_node
+{
+	int id;
+	struct list_head ref_list;
+	
 	struct list_head list;
 };
 
