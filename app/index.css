@@ -18,7 +18,7 @@ div { border:dotted 1px red; }*/
 .center { width:960px; margin:0 auto; }
 .clear { clear:both; }
 .hilite { background-color: darken(orange, 10%); color:#333; .shadow(#ccc); }
-.filter { margin:25px; border:dotted 1px @text_fg; }
+.filter { margin:25px 0; /*border-bottom:dotted 1px #666;*/ }
 
 /* sections */
 body {  background: url('/images/body_bg.png') repeat; color:@text_fg; }
@@ -40,7 +40,7 @@ div#header { height: 100px; background-color: @header_bg; color: @header_fg; bor
 }
 
 div#home {
-	table#results { width: 100%;
+	table#results { width: 100%; border-top: dotted 1px #999;
 		td { padding:1em 0; border-bottom: dotted 1px #999;  }
 		td.name { width:30%; }
 		td.score { width:20%; text-align: center; }

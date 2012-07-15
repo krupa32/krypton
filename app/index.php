@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		
-		<div id="search">
+		<div id="content">
 			<div class="center">
 			
 				<div class="page" id="home">

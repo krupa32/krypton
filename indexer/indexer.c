@@ -15,6 +15,7 @@
 struct index_node *root;
 struct list_head candidate_list;
 
+
 char *ignored_words[] = {
 	"a", "after", "all", "an", "and", "are", "as", "at",
 	"be", "been", "both", "by",
@@ -343,6 +344,23 @@ static int process_parse(struct indexer_msg *cmd, struct indexer_msg *rsp)
 	
 	return ret;
 }
+
+static int process_match(struct indexer_msg *cmd, struct indexer_msg *rsp)
+{
+	int ret = 0;
+	char file[100];
+	
+	printf("process_match: tags=%s, exp=%d, ctc=%d, location=%s\n",
+		   cmd->data.match_cmd.tags, cmd->data.match_cmd.experience,
+		   cmd->data.match_cmd.ctc, cmd->data.match_cmd.location);
+	
+	rsp->opcode = RSP_MATCH;
+	rsp->len = sizeof(struct indexer_match_rsp);
+	rsp->data.match_rsp.status = ret;
+	
+	return ret;
+}
+
 static int process_cmd(struct indexer_msg *cmd, struct indexer_msg *rsp)
 {
 	int ret = 0;
@@ -350,6 +368,9 @@ static int process_cmd(struct indexer_msg *cmd, struct indexer_msg *rsp)
 	switch (cmd->opcode) {
 	case CMD_PARSE:
 		ret = process_parse(cmd, rsp);
+		break;
+	case CMD_MATCH:
+		ret = process_match(cmd, rsp);
 		break;
 	default:
 		printf("Unrecognized command: 0x%x", cmd->opcode);

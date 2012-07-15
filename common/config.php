@@ -10,4 +10,7 @@
 	$upload_dir = "/uploads";
 	$upload_txt_dir = "/uploads_txt";
 	
+	$client_sock_name = "/tmp/client.sock";
+	$indexer_sock_name = "/tmp/indexer.sock";
+	
 ?>

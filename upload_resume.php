@@ -1,6 +1,7 @@
 <?php
 	
 	include "common/config.php";
+	include "common/utils.php";
 	
 	session_start();
 
@@ -75,59 +76,22 @@
 		$ret = "Error converting resume to txt";
 		goto out;
 	}
-	
-	/* create socket */
-	$cfd = socket_create(AF_UNIX, SOCK_STREAM, 0);
-	if (!$cfd) {
-		$ret = "Error creating socket";
-		goto out;
-	}
-	
-	/* bind socket */
-	$caddr = "/tmp/client.sock";
-	unlink($caddr);
-	if (!socket_bind($cfd, $caddr)) {
-		$ret = "Error binding socket";
-		goto out;
-	}
-	
-	/* connect to indexer */
-	$saddr = "/tmp/indexer.sock";
-	if (!socket_connect($cfd, $saddr)) {
-		$ret = "Error connecting to indexer:" . socket_strerror(socket_last_error());
-		goto out;
-	}
-	
-	/* send cmd to indexer */
+
+	/* send parse cmd to indexer */
 	$cmd = pack("iii", 0x01, 4, $id);
-	if (socket_send($cfd, $cmd, 12, 0) != 12) {
-		$ret = "Did not send 12 bytes";
-		goto out;
-	}
-	
-	/* recv rsp from indexer */
-	if (socket_recv($cfd, $rsp_data, 12, 0) != 12) {
-		$ret = "Did not receive 12 bytes";
-		goto out;
-	}
-	
-	/* check rsp */
+	$rsp_data = indexer_exec($cmd, 12, 12);
 	$rsp = unpack("iopcode/ilen/istatus", $rsp_data);
 	if ($rsp["status"] != 0) {
 		$ret = "Error indexing txt file";
 		goto out;
 	}
 	
-	socket_close($cfd);
-	$cfd = 0;
-	
+
 	$ret = true;
 
 out:
 	if (!$db->connect_error)
 		$db->close();
-	if ($cfd)
-		socket_close($cfd);
 		
 	print json_encode($ret);
 ?>

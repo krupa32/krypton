@@ -13,6 +13,8 @@
 
 #define MAX_FILENAME		64
 #define MAX_TAGS_LEN		100
+#define MAX_LOCATION_LEN	100
+
 #define MAX_MATCHES			100
 
 #define CMD_PARSE			0x01
@@ -56,10 +58,16 @@ struct indexer_parse_rsp
 struct indexer_match_cmd
 {
 	char tags[MAX_TAGS_LEN];
+	int experience;
+	int ctc;
+	char location[MAX_LOCATION_LEN];
 };
 
 struct indexer_match_rsp
 {
+	int status;
+	
+	/*
 	int n_matches;
 	
 	struct
@@ -67,6 +75,7 @@ struct indexer_match_rsp
 		int id;
 		int score;
 	} info[MAX_MATCHES];
+	*/
 };
 
 struct indexer_msg
