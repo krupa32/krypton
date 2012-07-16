@@ -34,21 +34,43 @@ err:
 
 	function filter($tags, $experience, $ctc, $location)
 	{
-		/* send match cmd to indexer */
-		$cmd = pack("iia100iia100", 0x02, 208, $tags, $experience, $ctc, $location);
-		$rsp_data = indexer_exec($cmd, 216, 12);
-		$rsp = unpack("iopcode/ilen/istatus", $rsp_data);
-		if ($rsp["status"] != 0) {
-			$ret = "Error finding matches";
+		global $db_host, $db_user, $db_password, $db_name;
+		$ret = null;
+		
+		$db = new mysqli($db_host, $db_user, $db_password, $db_name);
+		if ($db->connect_error) {
+			$ret = "Error opening db";
 			goto err;
 		}
 
+		/* send match cmd to indexer */
+		$cmd = pack("iia100iia100", 0x02, 208, $tags, $experience, $ctc, $location);
+		$rsp_data = indexer_exec($cmd, 216, 8 + 804);
+		$rsp = unpack("iopcode/ilen/in_matches", $rsp_data);
+		error_log("n_matches = " . $rsp["n_matches"]);
+		
+		for ($i = 0; $i < $rsp["n_matches"]; $i++) 
+		{
+			$info_str = substr($rsp_data, 12 + ($i * 8));
+			$info = unpack("iid/iscore", $info_str);
+			$q = "select * from candidates where id=" . $info["id"];
+			$res = $db->query($q);
+			if ($res && $res->num_rows > 0 && ($row = $res->fetch_assoc())) {
+				$row["score"] = $info["score"];
+				$ret[] = $row;
+			}
+		}
+
 		/* execute the stub function for now */
-		return filter_old($tags, $experience, $ctc, $location);
+		//return filter_old($tags, $experience, $ctc, $location);
 		
 err:
-		return null;
+		if (!$db->connect_error)
+			$db->close();
+		
+		return $ret;
 	}
+
 
 	session_start();
 
@@ -59,16 +81,21 @@ err:
 	$location = $_POST["location"];
 	$start = $_POST["start"];
 	$count = $_POST["count"];
+	$ret["results"] = null;
+	
+	$start_time = microtime(true);
 	
 	$matches = filter($tags, $experience, $ctc, $location);
 	if (!$matches)
 		goto out;
 	
 	for ($i = $start; $i < $start + $count && $i < count($matches); $i++)
-		$ret[] = $matches[$i];
+		$ret["results"][] = $matches[$i];
 
 
 out:
+	$end_time = microtime(true);
+	$ret["search_time"] = ($end_time - $start_time) * 1000; // in ms
 		
 	print json_encode($ret);
 ?>

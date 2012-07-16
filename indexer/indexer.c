@@ -178,6 +178,8 @@ static int index_word(char *word, int id)
 	list_for_each_entry(rnode, &p->ref_list, list) {
 		if (rnode->id == id) {
 			rnode->occurences++;
+			if (rnode->occurences > p->max_occurences)
+				p->max_occurences = rnode->occurences;
 			goto out;
 		}
 	}
@@ -192,6 +194,8 @@ static int index_word(char *word, int id)
 
 	rnode->id = id;
 	rnode->occurences++;
+	if (rnode->occurences > p->max_occurences)
+		p->max_occurences = rnode->occurences;
 	list_add_tail(&rnode->list, &p->ref_list);
 
 out:
@@ -347,12 +351,11 @@ static int process_parse(struct indexer_msg *cmd, struct indexer_msg *rsp)
 	return ret;
 }
 
-static struct list_head *get_ref_node_list(char *tag)
+static struct index_node *get_index_node(char *tag)
 {
 	int i;
 	char *ch = tag;
-	struct index_node *inode = root;
-	struct list_head *ret = NULL;
+	struct index_node *inode = root, *ret = NULL;
 	
 	while (*ch && inode) {
 		i = *ch - 'a';
@@ -360,9 +363,9 @@ static struct list_head *get_ref_node_list(char *tag)
 		ch++;
 	}
 	
-	if (*ch == 0) // tag is found
-		ret = &inode->ref_list;
-	
+	if (*ch == 0 && inode) // tag is found
+		ret = inode;
+
 	return ret;
 }
 
@@ -399,10 +402,10 @@ static void add_to_result(struct result_node *new_node)
 {
 	struct result_node *res_node;
 	
-	printf("adding id %d to results\n", new_node->id);
+	printf("adding id %d [score=%d] to results\n", new_node->id, new_node->score);
 	
 	list_for_each_entry(res_node, &result_list, list) {
-		if (new_node->score < res_node->score)
+		if (new_node->score > res_node->score)
 			break;
 	}
 	
@@ -433,10 +436,11 @@ static void free_all_results(void)
 
 static int process_match(struct indexer_msg *cmd, struct indexer_msg *rsp)
 {
-	int ret = 0, n_tags = 0, i = 0, full_tag_score, tag_score;
+	int ret = 0, n_tags = 0, i = 0;
+	float tag_ratio, tag_score;
 	char *tags[50], *p;
+	struct index_node *inode;
 	struct ref_node *rnode;
-	struct list_head *ref_node_list;
 	struct result_node *res_node;
 	
 	printf("process_match: tags=%s, exp=%d, ctc=%d, location=%s\n",
@@ -446,30 +450,29 @@ static int process_match(struct indexer_msg *cmd, struct indexer_msg *rsp)
 	result_cnt = 0;
 	
 	/* split and store each tag, max 50 tags */
-	p = strtok(cmd->data.match_cmd.tags, ",");
+	p = strtok(cmd->data.match_cmd.tags, ", ");
 	while (p && i < 50) {
 		n_tags++;
 		tags[i++] = p;
-		p = strtok(NULL, ",");
+		p = strtok(NULL, ", ");
 	}
-	
-	full_tag_score = n_tags * 200;
 	
 	/* for each tag */
 	for (i = 0; i < n_tags; i++) {
-		if ((ref_node_list = get_ref_node_list(tags[i])) == NULL)
+		if ((inode = get_index_node(tags[i])) == NULL)
 			continue;
 
 		/* for each candidate with a matching tag */
-		list_for_each_entry(rnode, ref_node_list, list) {
-			tag_score = (100 + rnode->occurences) / full_tag_score * WEIGHT_TAG;
+		list_for_each_entry(rnode, &inode->ref_list, list) {
+			tag_ratio = (float)rnode->occurences / inode->max_occurences;
+			tag_score = tag_ratio / n_tags * WEIGHT_TAG;
 			
 			if ((res_node = get_result_node(rnode->id)) == NULL) {
 				/* candidate not found in result, add new */
-				res_node = alloc_result_node(rnode->id, tag_score);
+				res_node = alloc_result_node(rnode->id, (int)tag_score);
 			} else {
 				/* candidate found in result */
-				res_node->score += tag_score;
+				res_node->score += (int)tag_score;
 				list_del_init(&res_node->list);
 			}
 			
@@ -477,13 +480,21 @@ static int process_match(struct indexer_msg *cmd, struct indexer_msg *rsp)
 		}
 	}
 	
-	/* free all result nodes */
-	free_all_results();
+	/* store results in rsp  */
+	i = 0;
+	list_for_each_entry(res_node, &result_list, list) {
+		rsp->data.match_rsp.info[i].id = res_node->id;
+		rsp->data.match_rsp.info[i].score = res_node->score;
+		i++;
+	}
 	
 	rsp->opcode = RSP_MATCH;
 	rsp->len = sizeof(struct indexer_match_rsp);
-	rsp->data.match_rsp.status = ret;
-	
+	rsp->data.match_rsp.n_matches = i;
+
+	/* free all result nodes */
+	free_all_results();
+
 	return ret;
 }
 

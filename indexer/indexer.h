@@ -30,6 +30,7 @@
 struct index_node
 {
 	struct index_node *child[26];
+	int max_occurences;
 	struct list_head ref_list;
 };
 
@@ -78,9 +79,6 @@ struct indexer_match_cmd
 
 struct indexer_match_rsp
 {
-	int status;
-	
-	/*
 	int n_matches;
 	
 	struct
@@ -88,7 +86,6 @@ struct indexer_match_rsp
 		int id;
 		int score;
 	} info[MAX_RESULTS];
-	*/
 };
 
 struct indexer_msg

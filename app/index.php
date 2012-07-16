@@ -62,6 +62,7 @@
 						<div id="experience_div">Minimum Experience<br><div id="min_experience"></div></div>
 						<div class="clear"></div>
 					</div>
+					<p class="timing">Search took <span id="search_time">0</span> ms</p>
 					<table id="results">
 						
 					</table>
