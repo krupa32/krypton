@@ -15,12 +15,17 @@
 #define MAX_TAGS_LEN		100
 #define MAX_LOCATION_LEN	100
 
-#define MAX_MATCHES			100
+#define MAX_RESULTS			100
 
 #define CMD_PARSE			0x01
 #define CMD_MATCH			0x02
 #define RSP_PARSE			0x81
 #define RSP_MATCH			0x82
+
+#define WEIGHT_TAG			60
+#define WEIGHT_EXPERIENCE	10
+#define WEIGHT_SALARY		10
+#define WEIGHT_LOCATION		20
 
 struct index_node
 {
@@ -41,6 +46,14 @@ struct candidate_node
 {
 	int id;
 	struct list_head ref_list;
+	
+	struct list_head list;
+};
+
+struct result_node
+{
+	int id;
+	int score;
 	
 	struct list_head list;
 };
@@ -74,7 +87,7 @@ struct indexer_match_rsp
 	{
 		int id;
 		int score;
-	} info[MAX_MATCHES];
+	} info[MAX_RESULTS];
 	*/
 };
 

@@ -14,6 +14,8 @@
 
 struct index_node *root;
 struct list_head candidate_list;
+struct list_head result_list;
+int result_cnt;
 
 
 char *ignored_words[] = {
@@ -74,7 +76,6 @@ static struct candidate_node *alloc_candidate_node(int id)
 	INIT_LIST_HEAD(&ret->ref_list);
 	
 	ret->id = id;
-	list_add_tail(&ret->list, &candidate_list);
 
 	return ret;
 }
@@ -218,6 +219,7 @@ static int index_file(char *dir, char *file)
 			ret = -1;
 			goto err;
 		}
+		list_add_tail(&cnode->list, &candidate_list);
 	} else {
 		remove_all_ref_nodes(cnode);
 	}
@@ -345,14 +347,138 @@ static int process_parse(struct indexer_msg *cmd, struct indexer_msg *rsp)
 	return ret;
 }
 
+static struct list_head *get_ref_node_list(char *tag)
+{
+	int i;
+	char *ch = tag;
+	struct index_node *inode = root;
+	struct list_head *ret = NULL;
+	
+	while (*ch && inode) {
+		i = *ch - 'a';
+		inode = inode->child[i];
+		ch++;
+	}
+	
+	if (*ch == 0) // tag is found
+		ret = &inode->ref_list;
+	
+	return ret;
+}
+
+static struct result_node *get_result_node(int id)
+{
+	struct result_node *res_node;
+	
+	list_for_each_entry(res_node, &result_list, list) {
+		if (res_node->id == id)
+			return res_node;
+	}
+	
+	return NULL;
+}
+
+static struct result_node *alloc_result_node(int id, int score)
+{
+	struct result_node *ret;
+
+	if ((ret = calloc(1, sizeof(*ret))) == NULL) {
+		printf("No memory\n");
+		return NULL;
+	}
+
+	INIT_LIST_HEAD(&ret->list);
+	
+	ret->id = id;
+	ret->score = score;
+
+	return ret;	
+}
+
+static void add_to_result(struct result_node *new_node)
+{
+	struct result_node *res_node;
+	
+	printf("adding id %d to results\n", new_node->id);
+	
+	list_for_each_entry(res_node, &result_list, list) {
+		if (new_node->score < res_node->score)
+			break;
+	}
+	
+	/* new_node should be added BEFORE res_node */
+	list_add_tail(&new_node->list, &res_node->list);
+	result_cnt++;
+	
+	if (result_cnt > MAX_RESULTS) {
+		/* remove and free the last entry */
+		res_node = list_entry(result_list.prev, struct result_node, list);
+		list_del_init(&res_node->list);
+		free(res_node);
+		result_cnt--;
+	}
+}
+
+static void free_all_results(void)
+{
+	struct result_node *res_node, *tmp;
+	
+	list_for_each_entry_safe(res_node, tmp, &result_list, list) {
+		list_del_init(&res_node->list);
+		free(res_node);
+	}
+	
+	result_cnt = 0;
+}
+
 static int process_match(struct indexer_msg *cmd, struct indexer_msg *rsp)
 {
-	int ret = 0;
-	char file[100];
+	int ret = 0, n_tags = 0, i = 0, full_tag_score, tag_score;
+	char *tags[50], *p;
+	struct ref_node *rnode;
+	struct list_head *ref_node_list;
+	struct result_node *res_node;
 	
 	printf("process_match: tags=%s, exp=%d, ctc=%d, location=%s\n",
 		   cmd->data.match_cmd.tags, cmd->data.match_cmd.experience,
 		   cmd->data.match_cmd.ctc, cmd->data.match_cmd.location);
+	
+	result_cnt = 0;
+	
+	/* split and store each tag, max 50 tags */
+	p = strtok(cmd->data.match_cmd.tags, ",");
+	while (p && i < 50) {
+		n_tags++;
+		tags[i++] = p;
+		p = strtok(NULL, ",");
+	}
+	
+	full_tag_score = n_tags * 200;
+	
+	/* for each tag */
+	for (i = 0; i < n_tags; i++) {
+		if ((ref_node_list = get_ref_node_list(tags[i])) == NULL)
+			continue;
+
+		/* for each candidate with a matching tag */
+		list_for_each_entry(rnode, ref_node_list, list) {
+			tag_score = (100 + rnode->occurences) / full_tag_score * WEIGHT_TAG;
+			
+			if ((res_node = get_result_node(rnode->id)) == NULL) {
+				/* candidate not found in result, add new */
+				res_node = alloc_result_node(rnode->id, tag_score);
+			} else {
+				/* candidate found in result */
+				res_node->score += tag_score;
+				list_del_init(&res_node->list);
+			}
+			
+			add_to_result(res_node);
+		}
+	}
+	
+	/* free all result nodes */
+	free_all_results();
 	
 	rsp->opcode = RSP_MATCH;
 	rsp->len = sizeof(struct indexer_match_rsp);
@@ -419,6 +545,7 @@ int main(int argc, char **argv)
 	}
 	
 	INIT_LIST_HEAD(&candidate_list);
+	INIT_LIST_HEAD(&result_list);
 
 	if ((ret = index_dir(RESUME_DIR) < 0))
 		goto err;
