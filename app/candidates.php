@@ -75,10 +75,10 @@ err:
 	session_start();
 
 	$id = $_SESSION["user_id"];
-	$tags = $_POST["tags"];
+	$tags = strtolower($_POST["tags"]);
 	$experience = $_POST["experience"];
 	$ctc = $_POST["ctc"];
-	$location = $_POST["location"];
+	$location = strtolower($_POST["location"]);
 	$start = $_POST["start"];
 	$count = $_POST["count"];
 	$ret["results"] = null;

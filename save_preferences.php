@@ -5,7 +5,7 @@
 	session_start();
 
 	$id = $_SESSION["user_id"];
-	$location = $_POST["location"];
+	$location = strtolower($_POST["location"]);
 	$ctc = $_POST["ctc"];
 
 	$db = new mysqli($db_host, $db_user, $db_password, $db_name);

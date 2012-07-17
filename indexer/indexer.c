@@ -10,6 +10,7 @@
 #include <dirent.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <mysql/mysql.h>
 #include "indexer.h"
 
 struct index_node *root;
@@ -53,7 +54,7 @@ static struct candidate_node *get_candidate_node(int id)
 {
 	struct candidate_node *cnode;
 	
-	list_for_each_entry(cnode, &candidate_list, list) {
+	klist_for_each_entry(cnode, &candidate_list, list) {
 		if (cnode->id == id)
 			return cnode;
 	}
@@ -65,8 +66,6 @@ static struct candidate_node *alloc_candidate_node(int id)
 {
 	struct candidate_node *ret;
 
-	printf("Allocating new candidate_node for %d\n", id);
-	
 	if ((ret = calloc(1, sizeof(*ret))) == NULL) {
 		printf("No memory\n");
 		return NULL;
@@ -86,9 +85,9 @@ static void remove_all_ref_nodes(struct candidate_node *cnode)
 	
 	printf("Removing all ref nodes for candidate %d\n", cnode->id);
 	
-	list_for_each_entry_safe(rnode, tmp, &cnode->ref_list, cref_list) {
-		list_del_init(&rnode->cref_list);
-		list_del_init(&rnode->list);
+	klist_for_each_entry_safe(rnode, tmp, &cnode->ref_list, cref_list) {
+		klist_del_init(&rnode->cref_list);
+		klist_del_init(&rnode->list);
 		free(rnode);
 	}
 }
@@ -121,7 +120,7 @@ static struct ref_node *alloc_ref_node(int id)
 	INIT_LIST_HEAD(&ret->cref_list);
 	
 	if (cnode = get_candidate_node(id))
-		list_add_tail(&ret->cref_list, &cnode->ref_list);
+		klist_add_tail(&ret->cref_list, &cnode->ref_list);
 
 	return ret;
 }
@@ -129,17 +128,22 @@ static struct ref_node *alloc_ref_node(int id)
 static int index_word(char *word, int id)
 {
 	int ret = 0;
-	char *c, ch_idx, w[128];
+	char *c, ch_idx, w[128], *s;
 	struct index_node *p = root, *new;
 	struct ref_node *rnode;
 
-	/* convert word to lower case */
-	strcpy(w, word);
+	/* validate and convert word to lower case.
+	 * validation is required because some non-ascii (>128) chars
+	 * were found in some resumes.
+	 */
 	c = w;
-	while (*c) {
-		*c = tolower(*c);
-		c++;
+	s = word;
+	while (*s) {
+		if (isascii(*s))
+			*c++ = tolower(*s);
+		s++;
 	}
+	*c = 0;
 
 	/* ignore common words */
 	if (ignore(w)) {
@@ -175,7 +179,7 @@ static int index_word(char *word, int id)
 	/* 'word' was already indexed in 'file', then it would
 	 * already be in the file_list. so just increment 'occurences'.
 	 */
-	list_for_each_entry(rnode, &p->ref_list, list) {
+	klist_for_each_entry(rnode, &p->ref_list, list) {
 		if (rnode->id == id) {
 			rnode->occurences++;
 			if (rnode->occurences > p->max_occurences)
@@ -196,7 +200,7 @@ static int index_word(char *word, int id)
 	rnode->occurences++;
 	if (rnode->occurences > p->max_occurences)
 		p->max_occurences = rnode->occurences;
-	list_add_tail(&rnode->list, &p->ref_list);
+	klist_add_tail(&rnode->list, &p->ref_list);
 
 out:
 	return ret;
@@ -223,7 +227,7 @@ static int index_file(char *dir, char *file)
 			ret = -1;
 			goto err;
 		}
-		list_add_tail(&cnode->list, &candidate_list);
+		klist_add_tail(&cnode->list, &candidate_list);
 	} else {
 		remove_all_ref_nodes(cnode);
 	}
@@ -281,12 +285,12 @@ static void dump_index(struct index_node *p, char *buf, int level)
 	int i, j;
 	struct ref_node *rnode;
 
-	if (!list_empty(&p->ref_list)) {
+	if (!klist_empty(&p->ref_list)) {
 		for (i = 0; i < level; i++)
 			printf("%c", buf[i]);
 		printf("\n");
 		/* print ref list */
-		list_for_each_entry(rnode, &p->ref_list, list) {
+		klist_for_each_entry(rnode, &p->ref_list, list) {
 			printf("id=%d, occurences=%d\n", rnode->id, rnode->occurences);
 		}
 
@@ -339,7 +343,7 @@ static int process_parse(struct indexer_msg *cmd, struct indexer_msg *rsp)
 	int ret = 0;
 	char file[100];
 	
-	printf("process_parse: id=%d\n", cmd->data.parse_cmd.id);
+	//printf("process_parse: id=%d\n", cmd->data.parse_cmd.id);
 	sprintf(file, "%d.txt", cmd->data.parse_cmd.id);
 	
 	ret = index_file(RESUME_DIR, file);
@@ -373,7 +377,7 @@ static struct result_node *get_result_node(int id)
 {
 	struct result_node *res_node;
 	
-	list_for_each_entry(res_node, &result_list, list) {
+	klist_for_each_entry(res_node, &result_list, list) {
 		if (res_node->id == id)
 			return res_node;
 	}
@@ -398,47 +402,96 @@ static struct result_node *alloc_result_node(int id, int score)
 	return ret;	
 }
 
-static void add_to_result(struct result_node *new_node)
+static void sort_results()
 {
-	struct result_node *res_node;
+	struct list_head tmp;
+	struct result_node *res_node, *tmp_node, *ins_node;
 	
-	printf("adding id %d [score=%d] to results\n", new_node->id, new_node->score);
+	/* move result_list to tmp and clear result_list */
+	INIT_LIST_HEAD(&tmp);
+	klist_splice_init(&result_list, &tmp);
 	
-	list_for_each_entry(res_node, &result_list, list) {
-		if (new_node->score > res_node->score)
-			break;
+	klist_for_each_entry_safe(res_node, tmp_node, &tmp, list) {
+		/* remove res_node from tmp list */
+		klist_del_init(&res_node->list);
+
+		/* find sorted position in result_list to insert res_node */
+		klist_for_each_entry(ins_node, &result_list, list) {
+			if (res_node->score > ins_node->score)
+				break;
+		}
+		
+		/* res_node should be inserted BEFORE insert pos */
+		klist_add_tail(&res_node->list, &ins_node->list);
+
 	}
 	
-	/* new_node should be added BEFORE res_node */
-	list_add_tail(&new_node->list, &res_node->list);
-	result_cnt++;
-	
-	if (result_cnt > MAX_RESULTS) {
-		/* remove and free the last entry */
-		res_node = list_entry(result_list.prev, struct result_node, list);
-		list_del_init(&res_node->list);
-		free(res_node);
-		result_cnt--;
-	}
 }
 
 static void free_all_results(void)
 {
 	struct result_node *res_node, *tmp;
 	
-	list_for_each_entry_safe(res_node, tmp, &result_list, list) {
-		list_del_init(&res_node->list);
+	klist_for_each_entry_safe(res_node, tmp, &result_list, list) {
+		klist_del_init(&res_node->list);
 		free(res_node);
 	}
 	
 	result_cnt = 0;
 }
 
+static int get_candidate_info(int id, int *experience, int *ctc, char *location)
+{
+	int ret = 0, i;
+	char q[100];
+	MYSQL *conn;
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	
+	if ((conn = mysql_init(NULL)) == NULL) {
+		printf("Error creating mysql conn\n");
+		ret = -1;
+		goto out;
+	}
+	
+	if (mysql_real_connect(conn, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, 0, NULL, 0) == NULL) {
+		printf("Error connecting to db\n");
+		ret = -1;
+		goto out;
+	}
+	
+	sprintf(q, "select experience,location,min_ctc from candidates where id=%d", id);
+	if (mysql_query(conn, q) != 0) {
+		printf("Error executing query\n");
+		ret = -1;
+		goto out;
+	}
+	
+	res = mysql_store_result(conn);
+	if (!res || mysql_num_rows(res) == 0) {
+		printf("No results found\n");
+		ret = -1;
+		goto out;
+	}
+	
+	row = mysql_fetch_row(res);
+	*experience = row[0] ? strtol(row[0], 0, 0) : 0;
+	strcpy(location, row[1] ? row[1] : '\0');
+	*ctc = row[2] ? strtol(row[2], 0, 0) : 0;
+	
+	mysql_free_result(res);
+
+out:
+	if (conn)
+		mysql_close(conn);
+	return ret;
+}
+
 static int process_match(struct indexer_msg *cmd, struct indexer_msg *rsp)
 {
-	int ret = 0, n_tags = 0, i = 0;
-	float tag_ratio, tag_score;
-	char *tags[50], *p;
+	int ret = 0, n_tags = 0, i = 0, experience, ctc, exp_diff, ctc_diff, n_locations = 0;
+	float tag_ratio, tag_score, exp_score, ctc_score, loc_score;
+	char *tags[50], *p, *locations[10], loc[100];
 	struct index_node *inode;
 	struct ref_node *rnode;
 	struct result_node *res_node;
@@ -450,10 +503,20 @@ static int process_match(struct indexer_msg *cmd, struct indexer_msg *rsp)
 	result_cnt = 0;
 	
 	/* split and store each tag, max 50 tags */
+	i = 0;
 	p = strtok(cmd->data.match_cmd.tags, ", ");
 	while (p && i < 50) {
 		n_tags++;
 		tags[i++] = p;
+		p = strtok(NULL, ", ");
+	}
+
+	/* split and store each location, max 10 locations */
+	i = 0;
+	p = strtok(cmd->data.match_cmd.location, ", ");
+	while (p && i < 10) {
+		n_locations++;
+		locations[i++] = p;
 		p = strtok(NULL, ", ");
 	}
 	
@@ -463,26 +526,52 @@ static int process_match(struct indexer_msg *cmd, struct indexer_msg *rsp)
 			continue;
 
 		/* for each candidate with a matching tag */
-		list_for_each_entry(rnode, &inode->ref_list, list) {
+		klist_for_each_entry(rnode, &inode->ref_list, list) {
 			tag_ratio = (float)rnode->occurences / inode->max_occurences;
 			tag_score = tag_ratio / n_tags * WEIGHT_TAG;
 			
 			if ((res_node = get_result_node(rnode->id)) == NULL) {
 				/* candidate not found in result, add new */
 				res_node = alloc_result_node(rnode->id, (int)tag_score);
+				klist_add_tail(&res_node->list, &result_list);
 			} else {
-				/* candidate found in result */
+				/* candidate found in result, just update score */
 				res_node->score += (int)tag_score;
-				list_del_init(&res_node->list);
 			}
 			
-			add_to_result(res_node);
 		}
 	}
 	
+	/* for each result */
+	klist_for_each_entry(res_node, &result_list, list) {
+		if (get_candidate_info(res_node->id, &experience, &ctc, loc) != 0)
+			continue;
+		
+		exp_diff = abs(cmd->data.match_cmd.experience - experience);
+		exp_score = (float)(10 - exp_diff) / 10 * WEIGHT_EXPERIENCE;
+		exp_score = (exp_score < 0) ? 0 : exp_score;
+		
+		ctc_diff = abs(cmd->data.match_cmd.ctc - ctc);
+		ctc_score = (float)(500000 - ctc_diff) / 500000 * WEIGHT_SALARY;
+		ctc_score = (ctc_score < 0) ? 0 : ctc_score;
+		
+		/* for each location given by user */
+		loc_score = 0;
+		for (i = 0; i < n_locations; i++) {
+			if (strstr(loc, locations[i]))
+				loc_score += (float)1 / n_locations * WEIGHT_LOCATION;
+		}
+		
+		//printf("id=%d,t=%d,e=%d,s=%d,l=%d\n", res_node->id, res_node->score,
+		//	   (int)exp_score, (int)ctc_score, (int)loc_score);
+		res_node->score += (int)(exp_score + ctc_score + loc_score);
+	}
+	
+	sort_results();
+	
 	/* store results in rsp  */
 	i = 0;
-	list_for_each_entry(res_node, &result_list, list) {
+	klist_for_each_entry(res_node, &result_list, list) {
 		rsp->data.match_rsp.info[i].id = res_node->id;
 		rsp->data.match_rsp.info[i].score = res_node->score;
 		i++;

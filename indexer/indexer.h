@@ -6,10 +6,15 @@
 #ifndef INDEXER_H
 #define INDEXER_H
 
-#include "list.h"
+#include "klist.h"
 
 #define RESUME_DIR				"/uploads_txt"
 #define INDEXER_SOCKET_PATH		"/tmp/indexer.sock"
+
+#define DB_HOST					"localhost"
+#define DB_USER					"root"
+#define DB_PASSWORD				"fossil27"
+#define DB_NAME					"app_db"
 
 #define MAX_FILENAME		64
 #define MAX_TAGS_LEN		100
@@ -22,10 +27,10 @@
 #define RSP_PARSE			0x81
 #define RSP_MATCH			0x82
 
-#define WEIGHT_TAG			60
+#define WEIGHT_TAG			70
 #define WEIGHT_EXPERIENCE	10
 #define WEIGHT_SALARY		10
-#define WEIGHT_LOCATION		20
+#define WEIGHT_LOCATION		10
 
 struct index_node
 {
