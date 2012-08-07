@@ -1,8 +1,7 @@
-/* temp styles *
-div { border:dotted 1px red; }*/
+/* temp styles */
+div { border:dotted 1px red; }
 
 /* less rules*/
-@header_bg: #303840; @header_fg:#999;
 @text_bg:#eee; @text_fg: #333;
 .shadow(@c:#fff) { text-shadow: 1px 1px 1px @c; }
 .rounded() { border-radius:4px; }
@@ -15,28 +14,24 @@ div { border:dotted 1px red; }*/
 *, body, input { margin:0; padding:0; font-size:12pt; font-family: "Duru Sans",sans-serif; outline:none; }
 
 /* classes*/ 
-.center { width:960px; margin:0 auto; }
+.viewport { width:960px; margin:0 auto; }
 .clear { clear:both; }
 .hilite { background-color: darken(orange, 10%); color:#333; .shadow(#ccc); }
 .filter { margin:25px 0; /*border-bottom:dotted 1px #666;*/ }
 
 /* sections */
 body {  background: url('/images/body_bg.png') repeat; color:@text_fg; }
-input[type=text], input[type=password] { width:100%; padding:8px; background-color: #e0e0e0; border:solid 1px #bbb; border-bottom: solid 1px #eee; .rounded(); }
+input[type=text], input[type=password] { padding:4px; background-color: #e0e0e0; border:solid 1px #bbb; border-bottom: solid 1px #eee; .rounded(); }
 
-div#top_bar { height:25px; background-color: black; color:#666; border-top:solid 1px black;
-	p { margin-top:6px; font-size:12px; }
-	ul { float: right; list-style: none; font-size: 12px;
-		li { display:inline; padding-left: 2em; border: none; line-height:12px; 
-			a, a:active, a:visited { text-decoration: none; color:#666; font-size:10px; padding:0; font-weight: bold;}
-			a:hover { color:#999; }
-		}
-	}
+div#top_bar { height:25px; text-align: right; color:#666; border-top:solid 1px transparent; border-bottom: solid 1px #999;
+	a,span { font-size:12px; line-height: 24px; }
 }
-div#header { height: 100px; background-color: @header_bg; color: @header_fg; border-bottom: solid 1px black;
-	img { width:300px; height:100px; }
-	div.nav { float:right; padding:41px 25px; cursor:pointer; font-weight: bold; .shadow(#000); }
-	div.nav:hover { background-color: lighten(@header_bg, 5%); }
+div#header { height: 100px; border-top: solid 1px #eee;
+	.left { float:left; width:34%; }
+	.center { float:left; margin:44px 0; text-align: center; width:30%; }
+	.right { float:left; margin:44px 0; width:34%; }
+	img { width:100px; height:100px; }
+	select { padding:4px; }
 }
 
 div#home {

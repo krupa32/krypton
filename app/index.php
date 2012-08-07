@@ -32,27 +32,34 @@
 	
 	<body>
 		<div id="top_bar">
-			<div class="center">
-				<ul>
-					<li><a href="">HELP</a></li>
-					<li><a href="">LOGOUT</a></li>
-					<li><a href="">CONTACT US</a></li>
-				</ul>
-				<p>Welcome <?php print $_SESSION["user_email"]; ?></p>
+			<div class="viewport">
+				<span>Welcome <?php print $_SESSION["user_email"]; ?></span>
+				<a href="">HELP</a>
+				<a href="">CONTACT</a>
+				<a href="">USERS</a>
+				<a href="">LOGOUT</a>
 			</div>
 		</div>
 		<div id="header">
-			<div class="center">
-				<img src="/images/logo.png" />
-				<div class="nav" id="nav_home">INTERVIEWS</div>
-				<div class="nav" id="nav_home">APPLICATIONS</div>
-				<div class="nav" id="nav_home">JOBS</div>
-				<div class="nav" id="nav_home">HOME</div>
+			<div class="viewport">
+				<div class="left"><img src="/images/logoimg.png" /></div>
+				<div class="center">
+					<a href="">MESSAGES</a>
+					<a href="">JOBS</a>
+				</div>
+				<div class="right">
+					<select>
+						<option>Messages</option>
+						<option>Jobs</option>
+						<option>Applications</option>
+					</select><input type="text" />
+				</div>
+				<div class="clear"></div>
 			</div>
 		</div>
 		
 		<div id="content">
-			<div class="center">
+			<div class="viewport">
 			
 				<div class="page" id="home">
 					<div class="filter" id="filter_home">
