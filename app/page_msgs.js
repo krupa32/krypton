@@ -1,37 +1,21 @@
 
-var page_home = {
-	
-	/* start record number to fetch */
-	start: 0,
-	
-	/* num records to fetch */
-	count: 10,
-	
-	/* time (in ms) to wait after a filter changes and before refresh */
-	refresh_timeout: 3000,
-	
-	/* refresh timer handle */
-	refresh_timer: null,
+var page_msgs = {
 	
 	init: function() {
 		console.log('initializing page_home');
-		
-		$('#min_experience').kslider({ max:50 });
-		
-		$('#max_ctc').kslider({ max:5000000, step:50000 });
-		
-		$('input#tags').keyup(this, this.filter_changed);
-		$('input#location').keyup(this, this.filter_changed);
-		$('#min_experience').bind('slidechange', this, this.filter_changed);
-		$('#max_ctc').bind('slidechange', this, this.filter_changed);
 	},
 	
 	show: function() {
-		$('#home').show();
-		this.refresh();
-	},
+		$('#page_msgs').show();
+	}
 	
-	refresh: function() {
+};
+
+/* register with the application */
+app.register_page('page_msgs', page_msgs);
+
+/* For future reference.
+  	refresh: function() {
 		console.log('refreshing home page');
 		
 		this.start = 0;
@@ -90,4 +74,4 @@ var page_home = {
 			pg.refresh();
 		}, pg.refresh_timeout);
 	}
-};
+*/

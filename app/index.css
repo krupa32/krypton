@@ -1,5 +1,5 @@
-/* temp styles */
-div { border:dotted 1px red; }
+/* temp styles 
+div { border:dotted 1px red; } */
 
 /* less rules*/
 @text_bg:#eee; @text_fg: #333;
@@ -12,48 +12,29 @@ div { border:dotted 1px red; }
 
 /* resets*/ 
 *, body, input { margin:0; padding:0; font-size:12pt; font-family: "Duru Sans",sans-serif; outline:none; }
+div { border-top:solid 1px transparent; } /* fix for margin-collapse */
 
 /* classes*/ 
 .viewport { width:960px; margin:0 auto; }
 .clear { clear:both; }
-.hilite { background-color: darken(orange, 10%); color:#333; .shadow(#ccc); }
-.filter { margin:25px 0; /*border-bottom:dotted 1px #666;*/ }
+.page { margin:10px 0; min-height: 400px; box-shadow: 0px 0px 10px #000; }
 
 /* sections */
 body {  background: url('/images/body_bg.png') repeat; color:@text_fg; }
 input[type=text], input[type=password] { padding:4px; background-color: #e0e0e0; border:solid 1px #bbb; border-bottom: solid 1px #eee; .rounded(); }
 
-div#top_bar { height:25px; text-align: right; color:#666; border-top:solid 1px transparent; border-bottom: solid 1px #999;
+div#top_bar { height:25px; text-align: right; color:#666;
 	a,span { font-size:12px; line-height: 24px; }
 }
-div#header { height: 100px; border-top: solid 1px #eee;
-	.left { float:left; width:34%; }
-	.center { float:left; margin:44px 0; text-align: center; width:30%; }
-	.right { float:left; margin:44px 0; width:34%; }
+div#header { height: 100px;
+	.left { float:left; width:200px; }
+	.center { float:left; margin:44px 0; text-align: center; width:550px; }
+	.right { float:left; margin:44px 0; width:200px; }
 	img { width:100px; height:100px; }
 	select { padding:4px; }
 }
 
-div#home {
-	p.timing { text-align: right; font-size:12px; color:lighten(@text_fg, 30%);
-		span { font:inherit; }
-	}
-	table#results { width: 100%; border-top: dotted 1px #999;
-		td { padding:1em 0; border-bottom: dotted 1px #999;  }
-		td.name { width:30%; }
-		td.score { width:20%; text-align: center; }
-		td.experience { width:10%; text-align: center; }
-		td.ctc { width:20%; text-align: center; }
-		td.location { width:20%; text-align: center; }
-		h1 { color:#900; font-size:14pt; font-weight: normal; }
-		p { font-weight:bold; }
-		p.hint { font-weight: normal; font-size:12px; color:lighten(@text_fg, 20%); }
-	}
+div#msgs {
 }
-div#filter_home {
-	p { margin:25px 25px 0 25px; }
-	div#location_div { float:left; width:25%; margin:25px; }
-	div#experience_div { float:right; width:25%; margin:25px; }
-	div#ctc_div { float:right; width: 30%; margin:25px; }
-	div#min_experience, div#max_ctc { padding:8px; background-color: #e0e0e0; border:solid 1px #bbb; border-bottom: solid 1px #eee; .rounded(); }
+div#jobs {
 }

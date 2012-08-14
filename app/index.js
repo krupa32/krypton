@@ -1,14 +1,29 @@
 
 var app = {
 	
+	/* list of pages in the application */
+	pages: { },
+	
+	register_page: function(pg_name, pg) {
+		console.log('registering page:' + pg_name);
+		this.pages[pg_name] = pg;
+	},
+	
 	init: function() {
 		
-		page_home.init();
-		page_jobs.init();
-		page_applications.init();
-		page_interviews.init();
+		var pg_name;
+		
+		for (pg_name in this.pages)
+			this.pages[pg_name].init();
+		
+		$('#header a').click(function(){
+			var pg_name = $(this).attr('pg_name');
+			$('.page').hide();
+			app.pages[pg_name].show();
+			return false;
+		});
 		
 		$('.page').hide();
-		page_home.show();
+		this.pages['page_msgs'].show();
 	}
 };
