@@ -16,7 +16,7 @@ var app = {
 		for (pg_name in this.pages)
 			this.pages[pg_name].init();
 		
-		$('#header a').click(function(){
+		$('#header button').click(function(){
 			var pg_name = $(this).attr('pg_name');
 			$('.page').hide();
 			app.pages[pg_name].show();
