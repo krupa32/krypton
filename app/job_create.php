@@ -7,6 +7,7 @@
 
 	$owner_id = $_SESSION["user_id"];
 	$title = strtolower($_POST["title"]);
+	$team = strtolower($_POST["team"]);
 	$location = strtolower($_POST["location"]);
 	$tags = strtolower($_POST["tags"]);
 	$experience = $_POST["experience"];
@@ -21,7 +22,7 @@
 		goto err;
 	}
 	
-	$q = "insert into jobs values(NULL, $owner_id, NULL, '$title', $experience, '$tags', '$location', $ctc, '$desc');";
+	$q = "insert into jobs values(NULL, $owner_id, NULL, '$title', '$team', $experience, '$tags', '$location', $ctc, '$desc');";
 	if (!$db->query($q)) {
 		$ret = $db->error;
 		goto err;

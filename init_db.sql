@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.41, for debian-linux-gnu (i486)
+-- MySQL dump 10.13  Distrib 5.1.61, for debian-linux-gnu (i686)
 --
 -- Host: localhost    Database: app_db
 -- ------------------------------------------------------
--- Server version	5.1.41-3ubuntu12.10
+-- Server version	5.1.61-0ubuntu0.10.10.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -73,7 +73,7 @@ CREATE TABLE `companies` (
   `name` varchar(100) DEFAULT NULL,
   `address` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,13 +104,14 @@ CREATE TABLE `jobs` (
   `owner_id` int(11) DEFAULT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `title` varchar(50) DEFAULT NULL,
+  `team` varchar(50) DEFAULT NULL,
   `experience` int(11) DEFAULT NULL,
   `tags` varchar(100) DEFAULT NULL,
   `location` varchar(50) DEFAULT NULL,
   `max_ctc` int(11) DEFAULT NULL,
   `description` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +127,7 @@ CREATE TABLE `recruiters` (
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -138,4 +139,4 @@ CREATE TABLE `recruiters` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-07-10 17:47:28
+-- Dump completed on 2012-09-06 17:11:04

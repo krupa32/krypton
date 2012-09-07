@@ -13,7 +13,7 @@
 		goto out;
 	}
 	
-	$q = "select id,password from recruiters where email='$email'";
+	$q = "select id,company_id,password from recruiters where email='$email'";
 	$res = $db->query($q);
 	if (!$res || $res->num_rows == 0) {
 		$ret = "Could not find $email in db";
@@ -30,6 +30,7 @@
 	
 	/* store the user id in the session */
 	$_SESSION["user_id"] = $row["id"];
+	$_SESSION["company_id"] = $row["company_id"];
 	
 	$ret = true;
 

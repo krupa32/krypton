@@ -22,6 +22,7 @@ var page_job_create = {
 			// collect params
 			var params = {};
 			params.title = $('#page_job_create #title').val();
+			params.team = $('#page_job_create #team').val();
 			params.tags = $('#page_job_create #tags').val();
 			params.location = $('#page_job_create #location').val();
 			params.experience = $('#page_job_create #experience').kslider('option', 'value');
@@ -34,11 +35,10 @@ var page_job_create = {
 				console.log('job_create received: ' + resp);
 				if (resp !== true) {
 						alert("There was an error creating the job. [" + resp + "]");
-						return;
 				}
 				
 				// return to back page
-				$('#page_job_create #back').click();
+				$('#page_job_create').dialog('close');
 				
 			});
 		});
