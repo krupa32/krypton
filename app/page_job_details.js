@@ -3,6 +3,17 @@ var page_job_details = {
 	
 	init: function() {
 		console.log('initializing page_job_details');
+		
+		$('div.to_be_screened').draggable({
+			revert: 'invalid'
+		});
+		
+		$('td.applications').droppable({
+			hoverClass: 'hover',
+			drop: function(event, ui) {
+				ui.draggable.detach().appendTo($(this)).css('left', 'auto').css('top', 'auto');
+			}
+		});
 	},
 	
 	show: function(job_id) {

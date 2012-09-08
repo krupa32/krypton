@@ -67,9 +67,9 @@
 			
 				<table id="job_details">
 					<tr>
-						<td class="candidate">Selected</td>
-						<td class="summary"><h5 id="title">Job Title</h5><h6 id="team_loc"></h6></td>
-						<td class="details"><h6 id="experience">2 yrs experience in</h6><h6 id="tags"></h6></td>
+						<td class="applications"></td>
+						<td class="summary"><h1 id="title">Job Title</h1><h2 id="team_loc"></h2></td>
+						<td class="details"><h2 id="experience">2 yrs experience in</h2><h2 id="tags"></h2></td>
 						<td class="actions">
 							<button id="edit">Edit Job Details</button><br><br>
 							<button id="cancel">Cancel Job</button><br><br>
@@ -84,6 +84,18 @@
 						<td class="header">TO BE INTERVIEWED</td>
 						<td class="header">OFFERED</td>
 						<td class="header">REJECTED</td>
+					</tr>
+					<tr>
+						<td class="applications">
+							<div class="application to_be_screened">
+								<h5>Krupa Sivakumaran</h5>
+								<h6>Score: 556</h6>
+							</div>
+						</td>
+						<td class="applications"></td>
+						<td class="applications"></td>
+						<td class="applications"></td>
+						<td class="applications"></td>
 					</tr>
 				</table>
 				
