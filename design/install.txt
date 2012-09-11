@@ -8,3 +8,6 @@ Installation Requirements and Tips
 	mysql -u root -p < init_db.sql
 4) Directories and files
 	/uploads - should be created with group write permission to 'www-data'
+	/uploads_txt - should be created with group write permission to 'www-data'
+5) abiword
+6) libmysqlclient-dev

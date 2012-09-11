@@ -86,16 +86,11 @@
 						<td class="header">REJECTED</td>
 					</tr>
 					<tr>
-						<td class="applications">
-							<div class="application to_be_screened">
-								<h5>Krupa Sivakumaran</h5>
-								<h6>Score: 556</h6>
-							</div>
-						</td>
-						<td class="applications"></td>
-						<td class="applications"></td>
-						<td class="applications"></td>
-						<td class="applications"></td>
+						<td class="applications" id="new"></td>
+						<td class="applications" id="schedule"></td>
+						<td class="applications" id="interview"></td>
+						<td class="applications" id="offered"></td>
+						<td class="applications" id="rejected"></td>
 					</tr>
 				</table>
 				
