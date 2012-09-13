@@ -67,7 +67,7 @@
 			
 				<table id="job_details">
 					<tr>
-						<td class="applications"></td>
+						<td class="applications" id="selected"></td>
 						<td class="summary"><h1 id="title">Job Title</h1><h2 id="team_loc"></h2></td>
 						<td class="details"><h2 id="experience">2 yrs experience in</h2><h2 id="tags"></h2></td>
 						<td class="actions">
@@ -79,9 +79,9 @@
 				
 				<table id="applications">
 					<tr>
-						<td class="header">TO BE SCREENED</td>
-						<td class="header">TO BE SCHEDULED</td>
-						<td class="header">TO BE INTERVIEWED</td>
+						<td class="header">NEW</td>
+						<td class="header">SCHEDULE</td>
+						<td class="header">INTERVIEW</td>
 						<td class="header">OFFERED</td>
 						<td class="header">REJECTED</td>
 					</tr>
