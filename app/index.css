@@ -12,7 +12,7 @@ td,div { border:dotted 1px red; }
 }
 
 /* resets*/ 
-*, body, input { margin:0; padding:0; font-size:12pt; font-family: "Duru Sans",sans-serif; outline:none; line-height: 12pt; color:@text_fg; }
+*, body, input { margin:0; padding:0; font-size:12pt; font-family: "Duru Sans",sans-serif; outline:none; line-height: 12pt; }
 div { border-top:solid 1px transparent; } /* fix for margin-collapse */
 button { padding:4px; cursor: pointer; color:@text_fg; }
 
@@ -56,11 +56,16 @@ div#page_job_create {
 	}
 }
 
+div#page_comment_add {
+	div { width:400px; text-align: center; }
+	textarea { width:100%; height: 200px; }
+}
+
 div#page_job_details {
 	td.applications { width:20%; }
 	td.hover { background-color: lighten(@body_bg, 10%); }
 	div.application { margin:5px; background-color: @text_bg; cursor: move;
-		h5 { margin:16px; text-transform: uppercase; color:@text_fg; .shadow(); }
+		h5 { margin:16px; text-transform: uppercase; color:@text_fg; .shadow(); text-decoration: underline; cursor: pointer; }
 		h6 { margin:16px; text-transform: uppercase; font-size: 12px; font-weight: normal; color:@text_fg; }
 	}
 	table#job_details { width:100%;
@@ -72,5 +77,21 @@ div#page_job_details {
 	}
 	table#applications { width:100%;
 		td.header { width:20%; text-align: center; text-transform: uppercase; color: @body_fg; .shadow(#000); }
+	}
+}
+
+div#page_application {
+	table#app { width:100%; color:@body_fg;
+		td.summary { width:30%; vertical-align: top;
+			h1 { margin:1em; font-size: 20px; text-transform: uppercase; .shadow(#000); }
+			p { margin:1em; }
+		}
+		td.resume { width:70%; }
+		p#resume { padding:1em; line-height: 1.3em; height: 400px; overflow: auto; }
+	}
+	
+	table#comments { width:100%; color: @body_fg;
+		td.time { width:30%; vertical-align: top; }
+		td.comment { width:70%; }
 	}
 }

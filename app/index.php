@@ -21,6 +21,8 @@
 		<script type="text/javascript" src="/app/page_jobs.js"></script>
 		<script type="text/javascript" src="/app/page_job_create.js"></script>
 		<script type="text/javascript" src="/app/page_job_details.js"></script>
+		<script type="text/javascript" src="/app/page_application.js"></script>
+		<script type="text/javascript" src="/app/page_comment_add.js"></script>
 		
 		<script type="text/javascript">
 			$(document).ready(function(){
@@ -65,6 +67,7 @@
 			
 			<div class="page" id="page_job_details">
 			
+			
 				<table id="job_details">
 					<tr>
 						<td class="applications" id="selected"></td>
@@ -95,6 +98,39 @@
 				</table>
 				
 			</div>
+			
+			<div class="page" id="page_application">
+				
+				<table id="app">
+					<tr>
+						<td class="summary">
+							<h1 id="name">Krupa Sivakumaran</h1>
+							<p id="rating">Rating</p>
+							<p id="experience">Experience</p>
+							<p id="location">Preferred Location</p>
+							<p id="ctc">Expected Salary</p>
+						</td>
+						<td class="resume">
+							<p id="resume">Resume</p>
+						</td>
+					</tr>
+				</table>
+				
+				<table id="comments">
+					
+				</table>
+			</div>
+
+			<div class="page" id="page_comment_add">
+				<div>
+					<textarea id="comment"></textarea>
+				</div>
+				<div>
+					<button id="add">Add Now</button>
+					<button id="later">Later</button>
+				</div>
+			</div>
+
 		</div>
 	</body>
 </html>

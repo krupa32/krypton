@@ -55,9 +55,12 @@ var page_job_details = {
 						}
 
 						ui.draggable.data('status', params.status);
+						ui.draggable.data('app_id', resp)
 						ui.draggable.detach().appendTo(drop_target).css('left', 'auto').css('top', 'auto');
 						
 						page_job_details.refresh_new_apps();
+						
+						page_comment_add.show(ui.draggable.data('app_id'));
 						
 					});
 					
@@ -73,6 +76,8 @@ var page_job_details = {
 
 						ui.draggable.data('status', params.status);
 						ui.draggable.detach().appendTo(drop_target).css('left', 'auto').css('top', 'auto');
+
+						page_comment_add.show(ui.draggable.data('app_id'));
 						
 					});
 				}
@@ -143,9 +148,15 @@ var page_job_details = {
 				score = resp.results[i].score;
 				div = $('<div class="application"><h5>' + name + '</h5><h6>Score: ' + score + '</h6></div>');
 				div.data('candidate_id', resp.results[i].id);
+				div.data('app_id', null);
 				div.data('job_id', page_job_details.cur_job_id);
 				div.data('score', score);
 				div.data('status', '1'); // new
+				div.find('h5').click(function() {
+					console.log('app clicked');
+					div = $(this).parent();
+					app.show_page('page_application', { app_id: div.data('app_id'), candidate_id: div.data('candidate_id') });
+				});
 				div.draggable({ revert: 'invalid' });
 				$('table#applications #new').append(div);
 			}
@@ -154,6 +165,11 @@ var page_job_details = {
 	},
 	
 	show: function(job_id) {
+
+		$('#page_job_details').show();
+
+		if (!job_id) // probably due to back button, nothing to load
+			return;
 		
 		this.cur_job_id = job_id;
 		
@@ -180,7 +196,7 @@ var page_job_details = {
 		
 		// get currently active applications
 		$.post('app_get_active.php', params, function(data) {
-			var resp = JSON.parse(data), i, name, score, div, id;
+			var resp = JSON.parse(data), i, name, score, div, id, candidate_id, app_id;
 			console.log('app_get_active received: ' + data);
 			if (typeof resp == 'string') {
 					alert("There was an error getting the job details. [" + resp + "]");
@@ -197,22 +213,32 @@ var page_job_details = {
 			for (i = 0; i < resp.length; i++) {
 				name = resp[i].name;
 				score = resp[i].score;
+				app_id = resp[i].id;
+				candidate_id = resp[i].candidate_id;
 				div = $('<div class="application"><h5>' + name + '</h5><h6>Score: ' + score + '</h6></div>');
+				div.data('app_id', resp[i].id);
 				div.data('candidate_id', resp[i].candidate_id);
 				div.data('job_id', page_job_details.cur_job_id);
 				div.data('score', score);
 				div.data('status', resp[i].status);
 				div.draggable({ revert: 'invalid' });
+				div.children('h5').click(function() {
+					console.log('app clicked');
+					div = $(this).parent();
+					app.show_page('page_application', { app_id: div.data('app_id'), candidate_id: div.data('candidate_id') });
+				});
 				id = page_job_details.status_to_id(resp[i].status);
 				$('td#' + id).append(div);
 			}
 		});
 		
-		$('#page_job_details').show();
 	},
 	
 	back: function() {
 		app.show_page('page_jobs');
+	},
+	
+	show_comment_form: function() {
 	}
 };
 

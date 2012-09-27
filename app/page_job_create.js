@@ -1,21 +1,11 @@
 
 var page_job_create = {
 	
-	// stores the page to return to
-	back_page: null,
-	
 	init: function() {
 		console.log('initializing page_job_create');
 		
 		$('#experience').kslider({ max:50 });
 		$('#ctc').kslider({ max:5000000, step:100000 });
-		
-		$('#page_job_create #back').click(function(){
-			if (page_job_create.back_page) {
-				$('#page_job_create').hide();
-				page_job_create.back_page.show();
-			}
-		});
 		
 		$('#page_job_create #create').click(function(){
 			
@@ -44,8 +34,7 @@ var page_job_create = {
 		});
 	},
 	
-	show: function(back_page) {
-		this.back_page = back_page;
+	show: function() {
 		$('#page_job_create').show();
 	}
 };

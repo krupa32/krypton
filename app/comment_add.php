@@ -5,12 +5,11 @@
 	
 	session_start();
 
-	$job_id = $_POST["job_id"];
-	$candidate_id = $_POST["candidate_id"];
-	$score = $_POST["score"];
-	$status = $_POST["status"];
+	$commentor_id = $_SESSION["user_id"];
+	$app_id = $_POST["app_id"];
+	$comment = $_POST["comment"];
 	
-	$ret = null;
+	$ret = true;
 	
 	$db = new mysqli($db_host, $db_user, $db_password, $db_name);
 	if ($db->connect_error) {
@@ -18,13 +17,11 @@
 		goto err;
 	}
 	
-	$q = "insert into applications values(NULL, $candidate_id, $job_id, $score, 0, $status)";
+	$q = "insert into comments values(NULL, $app_id, $commentor_id, NULL, '$comment');";
 	if (!$db->query($q)) {
 		$ret = $db->error;
 		goto err;
 	}
-	
-	$ret = $db->insert_id;
 
 err:
 	if (!$db->connect_error)

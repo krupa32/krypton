@@ -11,11 +11,11 @@
 	}
 	
 	
-	function relative_date($date)
+	function relative_date($timestamp)
 	{
-		$now = new DateTime();
-		$dt = new DateTime($date);
-		$diff = $now->diff($dt);
+		$now = new DateTime(date(DATE_W3C));
+		$dt = new DateTime(date(DATE_W3C, $timestamp));
+		$diff = $dt->diff($now);
 	
 		if ($diff->d)
 			$ret = $diff->format("%d days ago");
@@ -32,6 +32,8 @@
 	function indexer_exec($cmd, $cmd_len, $rsp_len)
 	{
 		global $client_sock_name, $indexer_sock_name;
+		
+		$ret = null;
 		
 		/* create socket */
 		$cfd = socket_create(AF_UNIX, SOCK_STREAM, 0);
