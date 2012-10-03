@@ -1,10 +1,10 @@
 /* temp styles *
-div { border:dotted 1px red; }*/
+div { border:dotted 1px red; }/
 
 /* less rules*/
-@header_bg: #333; @header_fg:#999;
-@text_fg: #333;
-.shadow(@c:#fff) { text-shadow: 1px 1px 1px @c; }
+@body_bg: #333; @body_fg:#999;
+@text_fg: #ccc;
+.shadow(@l:1px, @r:1px, @w:1px, @c:#000) { text-shadow: @l @r @w @c; }
 .rounded() { border-radius:4px; }
 .gradient(@c1:#ccc, @c2:#999) {
 	background: -webkit-linear-gradient(top, @c1, @c2); background: -moz-linear-gradient(top, @c1, @c2);
@@ -12,39 +12,26 @@ div { border:dotted 1px red; }*/
 }
 
 /* resets*/ 
-*, body, input { margin:0; padding:0; font-size:12pt; font-family: "Duru Sans",sans-serif; outline:none; }
+*, body, input { margin:0; padding:0; font-size:12pt; font-family: "Duru Sans",sans-serif; outline:none; color:@body_fg; }
 
 /* classes*/ 
 .center { width:960px; margin:0 auto; }
 
 /* sections */
-body {  background: url('/images/body_bg.png') repeat; color:@text_fg; }
-div#top_bar { height:25px; background-color: black; color:#666; }
-div#header { height: 100px; background-color: @header_bg; color: @header_fg; border-bottom: solid 1px black;
-	img { width:300px; height:100px; }
-	ul {
-		list-style: none; float: right; margin-top: 40px;
-		li { display:inline; padding-left: 2em;
-			a, a:active, a:visited { text-decoration: none; color:inherit; font-size: 12px; font-weight: bold; .shadow(#000); }
-			a:hover { color:white; }
-		}
-	}
+body {  background: url('/images/bg.png') repeat;  }
+div#header { padding:100px 0; text-align: center;
 }
 
-div#landing { border-top:solid 1px #fff;
-	div#features { width:550px; margin-top:75px; text-align: center;
+div#landing {
+	div#features { width:550px; margin-top:25px; text-align: center;
 		h1 { padding:25px 0; font:bold 32px Georgia, serif; font-style:italic; .shadow(); border-bottom:dotted 1px #999; }
-		p { margin:25px 0;  }
+		p { margin:25px 0; color:#999; }
 	}
-	div#login { float:right; width:300px; margin-top:25px;
-		p { margin-bottom:2em; }
-		input[type=text], input[type=password] { width:100%; padding:8px; background-color: #e0e0e0; border:solid 1px #bbb; border-bottom: solid 1px #eee; .rounded(); }
+	div#login { width:300px; margin:0px auto; 
+		p { color:#999; .shadow(); margin:2em 0; }
+		input[type=text], input[type=password] { width:100%; padding:8px; background-color: darken(@body_bg,5%); border:none; border-bottom: solid 1px lighten(@body_bg, 25%); .rounded(); }
 		p.ctoa { margin-top:3em; text-align:center;
-			a { padding:.8em 2em; .gradient(orange, darken(orange,10%)); color:#333; font-weight: bold; .shadow(#ccc); .rounded(); text-decoration: none; border-top: solid 1px #ddd; }
-			a:hover { .gradient(orange, darken(orange, 5%); }
-		}
-		p.sign_up { text-align: center;
-			a { color: #900; }
+			button { padding:8px 2em; .gradient(orange, darken(orange,10%)); color:#333; font-weight: bold; .shadow(1px, 1px, 1px, #ccc); border:none; .rounded(); text-decoration: none; border-top: solid 1px #ddd; }
 		}
 	}
 }

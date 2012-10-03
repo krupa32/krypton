@@ -3,7 +3,7 @@ var app = {
 	
 	init: function() {
 		
-		$('a#login').click(function() {
+		$('button#login').click(function() {
 			
 			var param = {};
 			
